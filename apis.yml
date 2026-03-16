@@ -1,0 +1,42 @@
+aid: automotive-grade-linux
+name: Automotive Grade Linux
+description: >-
+  Automotive Grade Linux (AGL) is a collaborative open source project under the Linux Foundation developing a shared software platform for the automotive industry. It provides a Linux-based operating system stack for in-vehicle infotainment, telematics, instrument clusters, and connected car applications.
+type: Index
+position: Consumer
+access: 3rd-Party
+image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - Automotive
+  - Embedded
+  - IoT
+  - Linux Foundation
+created: '2026-03-16'
+modified: '2026-03-16'
+url: >-
+  https://raw.githubusercontent.com/api-evangelist/automotive-grade-linux/refs/heads/main/apis.yml
+specificationVersion: '0.19'
+apis:
+  - aid: automotive-grade-linux:automotive-grade-linux-api
+    name: Automotive Grade Linux API
+    description: >-
+      API for accessing Automotive Grade Linux platform documentation and resources for building in-vehicle infotainment, telematics, and connected car applications.
+    humanURL: https://docs.automotivelinux.org/
+    tags:
+      - Automotive
+      - Embedded
+    properties:
+      - type: Documentation
+        url: https://docs.automotivelinux.org/
+common:
+  - type: Documentation
+    name: Automotive Grade Linux Documentation
+    description: Official documentation for Automotive Grade Linux.
+    url: https://docs.automotivelinux.org/
+  - type: GitHubOrg
+    name: Automotive Grade Linux GitHub
+    description: Source code and repositories for Automotive Grade Linux.
+    url: https://github.com/halderen
+maintainers:
+  - FN: Kin Lane
+    email: info@apievangelist.com
