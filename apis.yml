@@ -84,6 +84,8 @@ apis:
         url: https://github.com/automotive-grade-linux/meta-agl-monorepo
 
 common:
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/automotive-grade-linux
   - type: Website
     url: https://www.automotivelinux.org
   - type: Documentation
