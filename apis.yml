@@ -8,7 +8,7 @@ description: >-
   clusters, telematics, and software-defined vehicle (SoDeV) architectures. The platform
   decouples software from hardware enabling rapid automotive application development.
 type: Index
-image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
   - Automotive
   - Connected Vehicles
