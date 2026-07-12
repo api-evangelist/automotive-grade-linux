@@ -84,6 +84,10 @@ apis:
         url: https://github.com/automotive-grade-linux/meta-agl-monorepo
 
 common:
+  - type: DomainSecurity
+    url: security/automotive-grade-linux-domain-security.yml
+  - url: https://www.automotivelinux.org/feed/
+    type: Blog
   - type: LinkedIn
     url: https://www.linkedin.com/company/automotive-grade-linux
   - type: Website
