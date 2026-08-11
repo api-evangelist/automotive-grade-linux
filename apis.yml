@@ -96,6 +96,15 @@ apis:
         url: https://github.com/automotive-grade-linux/meta-agl-monorepo
 
 common:
+  - type: IssueTracker
+    url: https://github.com/COVESA/vsomeip/issues
+  - type: Releases
+    url: https://github.com/COVESA/vsomeip/releases
+  - type: ContributionGuide
+    url: https://github.com/COVESA/vsomeip/blob/master/CONTRIBUTING.md
+  - type: License
+    name: MPL-2.0
+    url: https://github.com/COVESA/vsomeip/blob/master/LICENSE
   - type: DomainSecurity
     url: security/automotive-grade-linux-domain-security.yml
   - url: https://www.automotivelinux.org/feed/
