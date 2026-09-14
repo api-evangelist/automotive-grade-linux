@@ -1,0 +1,76 @@
+# Automotive Grade Linux
+
+## Posts
+- [Meet the Mentees Building the Future of AGL Through Google Summer of Code](https://www.automotivelinux.org/blog/meet-the-mentees-building-the-future-of-agl-through-google-summer-of-code/): Every year, Google Summer of Code (GSoC) brings a fresh wave of talent into open source, and this year, three
+- [Software Defined Vehicle Accelerated by Open Source: AGL’s Track at COSCUP 2026](https://www.automotivelinux.org/blog/software-defined-vehicle-accelerated-by-open-source-agls-track-at-coscup-2026/): By Naoto Yamaguchi The Automotive Grade Linux (AGL) Japan team hosted the "Software Defined Vehicle Accelerated by Open Source" track
+- [Honda’s Chief Architect on SDV: “It Is Impossible to Achieve It Alone”](https://www.automotivelinux.org/blog/hondas-chief-architect-on-sdv-it-is-impossible-to-achieve-it-alone/): Adapted from the talk by Yuichi Kusakabe, Chief Architect, Honda Motor R&amp;D Co., Ltd. , AGL All Member Meeting Japan
+- [Make or Buy or Collaborate: What Linux Kernel History Tells Us About the SDV Crisis](https://www.automotivelinux.org/blog/make-or-buy-or-collaborate-what-linux-kernel-history-tells-us-about-the-sdv-crisis/): Adapted from the talk by Hisao Munakata, Senior Director, Renesas Electronics Corpat - All Member Meeting, Tokyo, Japan, May 13–14,
+- [Automotive Grade Linux Releases Open Source SoDeV Reference Platform for Software-Defined Vehicles and Welcomes Five New Members](https://www.automotivelinux.org/announcements/automotive-grade-linux-releases-open-source-sodev-reference-platform-for-software-defined-vehicles-and-welcomes-five-new-members/): AGL releases initial version of the open source SoDeV reference platform for software-defined vehicles and welcomes five new members.
+
+## Pages
+- [Home](https://www.automotivelinux.org/): AGL All Member Meeting Sept. 30- Oct. 1, 2026 | Berlin Call for Proposals closes July 12. Automotive Linux Summit
+- [Events](https://www.automotivelinux.org/events/)
+- [News](https://www.automotivelinux.org/news/)
+- [Announcements](https://www.automotivelinux.org/news/announcements/)
+- [News](https://www.automotivelinux.org/news/blog/)
+
+## Members
+- [Aisin Corporation](https://www.automotivelinux.org/members/aisin-corporation/)
+- [Honda](https://www.automotivelinux.org/members/honda/)
+- [Toyota](https://www.automotivelinux.org/members/toyota/)
+- [Suzuki](https://www.automotivelinux.org/members/suzuki/)
+- [Renesas](https://www.automotivelinux.org/members/renesas/)
+
+## Vendors
+- [Elektrobit](https://www.automotivelinux.org/vendor/elektrobit/)
+- [MERA](https://www.automotivelinux.org/vendor/mera/)
+- [Cognomotiv](https://www.automotivelinux.org/vendor/cognomotiv/)
+- [Airbiquity](https://www.automotivelinux.org/vendor/airbiquity/)
+- [Amazon](https://www.automotivelinux.org/vendor/amazon/)
+
+## Venues
+- [Frankfurt, Germany](https://www.automotivelinux.org/venue/frankfurt-germany/)
+- [Baden-Baden](https://www.automotivelinux.org/venue/baden-baden/)
+- [NürnbergMesse GmbH, Nuremberg, Germany](https://www.automotivelinux.org/venue/)
+- [NürnbergMesse GmbH](https://www.automotivelinux.org/venue/__trashed-3/)
+- [Hilton Tokyo](https://www.automotivelinux.org/venue/)
+
+## Organizers
+- [Embedded World](https://www.automotivelinux.org/organizer/)
+- [Informa Tech](https://www.automotivelinux.org/organizer/informa-tech/)
+- [Informa Tech](https://www.automotivelinux.org/organizer/informa-tech-2/)
+- [Consumer Technology Association](https://www.automotivelinux.org/organizer/consumer-technology-association-2/)
+- [Consumer Technology Association](https://www.automotivelinux.org/organizer/consumer-technology-association-3/)
+
+## Events
+- [Autonomous Vehicles & AI Europe 2026](https://www.automotivelinux.org/event/autonomous-vehicles-ai-europe-2026/)
+- [AGL All Member Meeting Summer 2026](https://www.automotivelinux.org/event/agl-all-member-meeting-summer-2026/): Sept. 30-Oct. 1, 2026 | Berlin, Germany | The Automotive Grade Linux (AGL) All Member Meeting takes place bi-annually and
+- [Eliv 2026](https://www.automotivelinux.org/event/eliv-2026/): Dan Cauchy, Executive Director of Automotive Grade Linux, will deliver a featured presentation titled "The $2 Trillion Shift: How Open
+
+## Categories
+- [In the News](https://www.automotivelinux.org/category/in-the-news/)
+- [Announcements](https://www.automotivelinux.org/category/announcements/)
+- [Blog](https://www.automotivelinux.org/category/blog/)
+- [Developer Showcase](https://www.automotivelinux.org/category/blog/developer-showcase/)
+- [Member Spotlight](https://www.automotivelinux.org/category/blog/member-spotlight/)
+
+## Tags
+- [CES](https://www.automotivelinux.org/tag/ces/)
+- [developer showcase](https://www.automotivelinux.org/tag/developer-showcase/)
+- [developer](https://www.automotivelinux.org/tag/developer/)
+- [ucb](https://www.automotivelinux.org/tag/ucb/)
+- [SDV](https://www.automotivelinux.org/tag/sdv/)
+
+## Members Categories
+- [Advisory Board](https://www.automotivelinux.org/members_category/advisory-board/)
+- [Steering Committee](https://www.automotivelinux.org/members_category/steering-committee/)
+
+## Event Categories
+- [Industry Conference](https://www.automotivelinux.org/events/category/industry-conference/)
+- [AGL Event](https://www.automotivelinux.org/events/category/agl-event/)
+- [Developer](https://www.automotivelinux.org/events/category/developer/)
+- [F2F](https://www.automotivelinux.org/events/category/f2f/)
+- [Automotive](https://www.automotivelinux.org/events/category/automotive/)
+
+## Optional
+- [Sitemap index](https://www.automotivelinux.org/wp-sitemap.xml)

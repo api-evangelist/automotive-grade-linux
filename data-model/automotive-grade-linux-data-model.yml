@@ -1,0 +1,156 @@
+generated: '2026-09-14'
+method: derived
+source: >-
+  openapi/automotive-grade-linux-events-api-openapi.json (components.schemas $ref graph) and
+  openapi/automotive-grade-linux-events-tec-v1-openapi.json, plus the LAVA object vocabulary AGL
+  documents in skills/automotive-grade-linux-lava-skill.md
+scope_note: >-
+  Two disjoint models, not one. The events model is fully derivable because AGL serves a real OpenAPI
+  for it. The LAVA model is recorded only as far as AGL's own reference states it - LAVA publishes no
+  schema, so no field list is claimed beyond what AGL documents.
+models:
+- id: events
+  base: https://www.automotivelinux.org/wp-json/tribe/events/v1/
+  spec: openapi/automotive-grade-linux-events-api-openapi.json
+  entities:
+  - name: Event
+    id_field: id
+    also: global_id (globally unique across federated sites), global_id_lineage[]
+    key_fields: [title, slug, status, start_date, end_date, utc_start_date, utc_end_date, timezone, all_day, cost, featured, sticky, hide_from_listings, url, rest_url]
+    note: >-
+      Dates are carried twice - as a string and as a structured DateDetails object
+      (year/month/day/hour/minutes/seconds) - in both local and UTC form, four DateDetails refs per event.
+  - name: Venue
+    id_field: id
+    key_fields: [venue, slug, address, city, state, stateprovince, province, zip, country, geo_lat, geo_lng, phone, website, show_map, show_map_link]
+  - name: Organizer
+    id_field: id
+    key_fields: [organizer, slug, phone, website, email]
+  - name: Term
+    id_field: id
+    key_fields: [name, slug, taxonomy, description, parent, count, url, urls]
+    note: one shape serves both event categories (tribe_events_cat) and tags
+  - name: Image
+    id_field: id
+    key_fields: [url, extension, width, height, sizes]
+  - name: ImageSize
+    key_fields: [width, height, mime-type, url]
+  - name: DateDetails
+    key_fields: [year, month, day, hour, minutes, seconds]
+  - name: CostDetails
+    key_fields: [currency_symbol, currency_position, values]
+  - name: Series
+    source: tec/v1 only (GET /series, tagged "Events Pro")
+    note: recurring-event series; present in the newer namespace only
+  relationships:
+  - from: Event
+    to: Venue
+    type: has_one
+    via: venue
+  - from: Event
+    to: Organizer
+    type: has_one
+    via: organizer
+  - from: Event
+    to: Term
+    type: has_many
+    via: categories
+  - from: Event
+    to: Term
+    type: has_many
+    via: tags
+  - from: Event
+    to: Image
+    type: has_one
+    via: image
+  - from: Event
+    to: DateDetails
+    type: has_many
+    via: [start_date_details, end_date_details, utc_start_date_details, utc_end_date_details]
+  - from: Event
+    to: CostDetails
+    type: has_one
+    via: cost_details
+  - from: Venue
+    to: Image
+    type: has_one
+    via: image
+  - from: Organizer
+    to: Image
+    type: has_one
+    via: image
+  - from: Image
+    to: ImageSize
+    type: has_many
+    via: sizes
+  - from: Term
+    to: Term
+    type: belongs_to
+    via: parent
+  - from: Event
+    to: Author
+    type: belongs_to
+    via: author
+    note: author is an integer WordPress user id; the user object is not exposed (wp/v2/users is disabled on this host)
+  addressing:
+    detail: >-
+      Every top-level entity is addressable twice - by numeric id (/events/{id}) and by slug
+      (/events/by-slug/{slug}) - and carries both a human url and a machine rest_url.
+- id: lava
+  base: https://lava.automotivelinux.org/api/v0.2/
+  spec: none published
+  entities:
+  - name: TestJob
+    id_field: id
+    documented_fields: [state, health, device_type, submitter, submit_time, definition]
+    states: [Submitted, Scheduling, Scheduled, Running, Canceling, Finished]
+    health: [Unknown, Complete, Incomplete, Canceled]
+    source: skills/automotive-grade-linux-lava-skill.md
+  - name: Device
+    id_field: hostname
+    documented_fields: [device_type, health, state]
+    health: [Good, Unknown, Looping, Bad, Maintenance, Retired]
+    states: [Idle, Reserved, Running]
+  - name: DeviceType
+    id_field: name
+  - name: Worker
+  - name: Tag
+  - name: Alias
+    note: device type aliases
+  relationships:
+  - from: TestJob
+    to: DeviceType
+    type: belongs_to
+    via: device_type
+  - from: TestJob
+    to: Device
+    type: belongs_to
+    via: target
+    note: a job names either a device_type (scheduler picks a device) or a specific hostname via target
+  - from: Device
+    to: DeviceType
+    type: belongs_to
+    via: device_type
+  - from: Device
+    to: Worker
+    type: belongs_to
+    via: worker
+  - from: Device
+    to: Tag
+    type: has_many
+    via: tags
+  - from: Alias
+    to: DeviceType
+    type: belongs_to
+  collections_observed:
+  - aliases
+  - devices
+  - devicetypes
+  - jobs
+  - permissions/devicetypes
+  - permissions/devices
+  - system
+  - tags
+  - workers
+  - remote-artifact-tokens
+  collections_source: https://lava.automotivelinux.org/api/v0.2/ (the DRF root, saved at openapi/_source/automotive-grade-linux-lava-api-v0.2-root.json)

@@ -1,0 +1,95 @@
+generated: '2026-09-14'
+method: searched
+status: published
+source: https://github.com/automotive-grade-linux/lava-mcp-toolkit
+summary: >-
+  Automotive Grade Linux publishes a first-party MCP server - lava-mcp-toolkit - in its own GitHub
+  organization (Apache-2.0, first release 0.1.0 on 2026-08-27). It exposes the AGL LAVA test
+  infrastructure at https://lava.automotivelinux.org to agents as MCP tools, and is implemented four
+  times over (Go, Python, Rust, C++), each in a `stdio` single-identity variant and a `server`
+  multi-tenant HTTP variant. AGL does NOT operate a hosted/remote MCP endpoint - every variant is run
+  by the consumer on their own machine or their own server, so an agent cannot reach AGL's LAVA
+  through MCP without someone installing and running this first.
+deployment:
+  mode: local-stdio
+  endpoint: null
+  install: "git clone https://github.com/automotive-grade-linux/lava-mcp-toolkit && cd lava-mcp-toolkit/python/stdio && LAVA_URL=https://lava.automotivelinux.org LAVA_TOKEN=<token> python3 main.py"
+  package: https://github.com/automotive-grade-linux/lava-mcp-toolkit
+  auth: api-key
+  verified: searched
+  note: >-
+    `mode: local-stdio` rather than `both`. The repo's `server` variant is an HTTP MCP server
+    (`POST /mcp` with `Authorization: Bearer <mcp_token>`, `GET /healthz`), but it is software the
+    consumer deploys themselves - AGL publishes no hosted URL for it, and the README says to put
+    TLS termination in front because the server speaks plain HTTP only. No vendor-operated remote
+    endpoint exists, so nothing here can be POSTed to today.
+server:
+  name: lava
+  repository: https://github.com/automotive-grade-linux/lava-mcp-toolkit
+  license: Apache-2.0
+  version: 0.1.0
+  released: '2026-08-27'
+  transports:
+  - stdio
+  - http
+  implementations:
+  - language: go
+    variants: [stdio, server]
+    path: go/
+  - language: python
+    variants: [stdio, server]
+    path: python/
+  - language: rust
+    variants: [stdio, server]
+    path: rust/
+  - language: cpp
+    variants: [stdio, server]
+    path: cpp/
+  backing_api:
+    name: AGL LAVA REST API v0.2
+    base: https://lava.automotivelinux.org/api/v0.2/
+    auth: "Authorization: Token <token>"
+  credential_handling: >-
+    The LAVA token is never placed in the model's context. stdio variants read LAVA_TOKEN from the
+    process environment; server variants map an MCP bearer token to a LAVA identity server-side via
+    users.json, exchanging it at call time.
+tools:
+- name: lava_list_jobs
+  description: "List LAVA test jobs. Optional filters: state, health, device_type, submitter, ordering, limit, offset."
+  source: python/stdio/tools.py
+- name: lava_get_job
+  description: Get details of a single LAVA job by id.
+  source: python/stdio/tools.py
+- name: lava_job_logs
+  description: Fetch log lines for a job, optionally starting at a given line offset.
+  source: python/stdio/tools.py
+- name: lava_submit_job
+  description: Submit a new LAVA job. definition must be a complete LAVA job YAML string.
+  source: python/stdio/tools.py
+- name: lava_cancel_job
+  description: Cancel a running or queued LAVA job.
+  source: python/stdio/tools.py
+- name: lava_list_devices
+  description: "List LAVA devices. Optional filters: device_type, health, state."
+  source: python/stdio/tools.py
+- name: lava_get_device
+  description: Get details of a single device by hostname.
+  source: python/stdio/tools.py
+- name: lava_raw_request
+  description: "Escape hatch: raw REST call under /api/v0.2/. method GET|POST|PUT, path relative to /api/v0.2/."
+  source: python/stdio/tools.py
+- name: lava_whoami
+  description: Report which LAVA identity the calling MCP token is mapped to, without revealing the LAVA token.
+  source: python/server/rpc.py
+  variants: [server]
+  note: server (multi-tenant) variants only; not present in the stdio tool set
+x-evidence:
+  fetched: '2026-09-14'
+  urls:
+  - https://raw.githubusercontent.com/automotive-grade-linux/lava-mcp-toolkit/main/README.md
+  - https://raw.githubusercontent.com/automotive-grade-linux/lava-mcp-toolkit/main/python/stdio/tools.py
+  - https://raw.githubusercontent.com/automotive-grade-linux/lava-mcp-toolkit/main/python/server/README.md
+  - https://raw.githubusercontent.com/automotive-grade-linux/lava-mcp-toolkit/main/CHANGELOG.md
+  tool_schemas: >-
+    Real inputSchema objects were read from the repository source (python/stdio/tools.py), not guessed -
+    every tool above carries a JSON Schema in that file.

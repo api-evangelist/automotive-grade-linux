@@ -1,0 +1,107 @@
+generated: '2026-09-14'
+method: searched
+source: >-
+  npm, PyPI, crates.io, pkg.go.dev/proxy.golang.org and the AGL GitHub organization were queried
+  2026-09-14; the only first-party client code found is lava-mcp-toolkit, distributed from source.
+summary: >-
+  AGL publishes no client SDK on any public package registry. It does publish first-party API client
+  code: lava-mcp-toolkit ships four complete implementations of a LAVA REST client (Go, Python, Rust,
+  C++) under Apache-2.0, each usable as an MCP server or as a library. Distribution is git-clone only -
+  there is no npm, PyPI, crates.io, NuGet, Maven or RubyGems artifact, and the Go modules declare local
+  module paths (`lava-mcp-server`, `lava-mcp-stdio`) rather than a github.com/... path, so `go get`
+  does not resolve them either. AGL's own platform code (meta-agl, the agl-service-* bindings) ships as
+  Yocto/OpenEmbedded layers and BitBake recipes, which are not language package registries.
+packages:
+- language: python
+  registry: source
+  name: lava-mcp-toolkit (python/stdio, python/server)
+  url: https://github.com/automotive-grade-linux/lava-mcp-toolkit/tree/main/python
+  install: "git clone https://github.com/automotive-grade-linux/lava-mcp-toolkit"
+  official: true
+  version: 0.1.0
+  published: '2026-08-27'
+  version_source: CHANGELOG.md [0.1.0] - 2026-08-27
+  note: >-
+    Pure standard library, Python 3.10+, no pip install step. Not on PyPI - pypi.org/pypi/lava-mcp/json
+    returned 404 on 2026-09-14. LavaClient in lava_client.py is the reusable REST client.
+- language: go
+  registry: source
+  name: lava-mcp-toolkit (go/stdio, go/server)
+  url: https://github.com/automotive-grade-linux/lava-mcp-toolkit/tree/main/go
+  install: "git clone https://github.com/automotive-grade-linux/lava-mcp-toolkit && cd go/server && go build"
+  official: true
+  version: null
+  published: '2026-08-27'
+  note: >-
+    version null on purpose: no semver tag has ever been pushed, so proxy.golang.org answers only a
+    pseudo-version, v0.0.0-20260827103141-92cc6fb05cf2 (commit 92cc6fb, 2026-08-27). The go.mod files
+    declare module `lava-mcp-server` / `lava-mcp-stdio` rather than a github.com path, so the module
+    is not `go get`-able under its repository URL. A consumer cannot pin a release because none exists.
+- language: rust
+  registry: source
+  name: lava-mcp-server / lava-mcp-stdio (rust/)
+  url: https://github.com/automotive-grade-linux/lava-mcp-toolkit/tree/main/rust
+  install: "git clone https://github.com/automotive-grade-linux/lava-mcp-toolkit && cd rust/server && cargo build --release"
+  official: true
+  version: 0.1.0
+  published: '2026-08-27'
+  version_source: rust/server/Cargo.toml (version = "0.1.0")
+  note: >-
+    Not on crates.io - crates.io/api/v1/crates/lava-mcp returned 404 on 2026-09-14. Cargo.lock is
+    committed; serde_json is the only declared dependency.
+- language: cpp
+  registry: source
+  name: lava-mcp-toolkit (cpp/stdio, cpp/server)
+  url: https://github.com/automotive-grade-linux/lava-mcp-toolkit/tree/main/cpp
+  install: "git clone https://github.com/automotive-grade-linux/lava-mcp-toolkit && cd cpp/server && make"
+  official: true
+  version: 0.1.0
+  published: '2026-08-27'
+  version_source: CHANGELOG.md [0.1.0] - 2026-08-27
+  note: Makefile build, no package manager artifact.
+container_images:
+- name: lava-mcp-server (rust/server)
+  registry: ghcr
+  url: https://github.com/automotive-grade-linux/lava-mcp-toolkit/blob/main/docker-compose.yml
+  official: true
+  version: null
+  published: null
+  note: >-
+    version null - the release workflow pushes a GHCR image only on a `v*.*.*` tag behind a human
+    approval gate, and no tag or GitHub Release has been cut yet (gh api .../releases returned an
+    empty list, .../tags likewise, 2026-09-14). The image is buildable locally via `make container-run`.
+registries_checked:
+- registry: npm
+  result: no first-party package
+  probes:
+  - url: https://registry.npmjs.org/lava-mcp-toolkit
+    status: 404
+  - url: https://registry.npmjs.org/@automotive-grade-linux/lava-mcp
+    status: 404
+- registry: pypi
+  result: no first-party package
+  probes:
+  - url: https://pypi.org/pypi/lava-mcp/json
+    status: 404
+- registry: crates.io
+  result: no first-party package
+  probes:
+  - url: https://crates.io/api/v1/crates/lava-mcp
+    status: 404
+- registry: go
+  result: pseudo-version only, no tagged release
+  probes:
+  - url: https://proxy.golang.org/github.com/automotive-grade-linux/lava-mcp-toolkit/@latest
+    status: 200
+    value: v0.0.0-20260827103141-92cc6fb05cf2
+- registry: maven / nuget / rubygems / packagist
+  result: not applicable - AGL ships no JVM, .NET, Ruby or PHP client
+sbom:
+  published: true
+  format: CycloneDX JSON
+  url: https://github.com/automotive-grade-linux/lava-mcp-toolkit/tree/main/sbom
+  files: [cpp.cdx.json, go.cdx.json, python.cdx.json, rust.cdx.json]
+  note: >-
+    A per-language CycloneDX SBOM is committed to the repo, alongside docs/cra-compliance.md mapping
+    the repository's artifacts to EU Cyber Resilience Act essential requirements. Unusual for a
+    project of this size and worth recording as published supply-chain evidence.

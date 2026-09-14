@@ -1,0 +1,22 @@
+{
+    "linkset": [
+        {
+            "anchor": "https://www.automotivelinux.org/wp-json/",
+            "service-desc": [
+                {
+                    "href": "https://www.automotivelinux.org/wp-json/"
+                }
+            ],
+            "service-doc": [
+                {
+                    "href": "https://developer.wordpress.org/rest-api/"
+                }
+            ],
+            "status": [
+                {
+                    "href": "https://www.automotivelinux.org"
+                }
+            ]
+        }
+    ]
+}

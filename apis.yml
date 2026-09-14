@@ -54,7 +54,7 @@ tags_raw:
 url: >-
   https://raw.githubusercontent.com/api-evangelist/automotive-grade-linux/refs/heads/main/apis.yml
 created: '2026-03-16'
-modified: '2026-04-19'
+modified: '2026-09-14'
 specificationVersion: '0.23'
 apis:
   - aid: automotive-grade-linux:agl-application-framework-api
@@ -116,7 +116,181 @@ apis:
       - type: GitHubRepository
         url: https://github.com/automotive-grade-linux/meta-agl-monorepo
 
+  - aid: automotive-grade-linux:agl-events-api
+    name: AGL Events API
+    description: >-
+      The public event calendar API for automotivelinux.org, serving the AGL All Member Meeting,
+      Automotive Linux Summit, CES and Embedded World appearances, developer meetings and webinars
+      as JSON. Reads are anonymous; writes require WordPress Application Passwords. Served by The
+      Events Calendar REST API on AGL's own WordPress host, which publishes a real OpenAPI 3.0.0
+      document at its /doc endpoint - 30 operations across events, venues, organizers, categories
+      and tags, each addressable by numeric id or by slug.
+    humanURL: https://www.automotivelinux.org/events/
+    baseURL: https://www.automotivelinux.org/wp-json/tribe/events/v1
+    tags:
+      - Events
+      - Calendar
+      - Content
+      - Community
+    properties:
+      - type: OpenAPI
+        url: openapi/automotive-grade-linux-events-api-openapi.json
+      - type: Overlay
+        url: overlays/automotive-grade-linux-events-api-overlay.yaml
+      - type: DataModel
+        url: data-model/automotive-grade-linux-data-model.yml
+      - type: ErrorCatalog
+        url: errors/automotive-grade-linux-problem-types.yml
+      - type: Documentation
+        url: https://www.automotivelinux.org/wp-json/tribe/events/v1/doc
+
+  - aid: automotive-grade-linux:agl-events-api-tec-v1
+    name: AGL Events API (tec/v1)
+    description: >-
+      The newer generation of the AGL event calendar API, served side by side with tribe/events/v1 on
+      the same host. 17 operations with real operationIds, tags and a Series entity for recurring
+      events, described by an OpenAPI 3.0.4 document the host publishes at /docs. Declares HTTP Basic
+      (WordPress Application Passwords) on every write; GET operations answer anonymously.
+    humanURL: https://www.automotivelinux.org/events/
+    baseURL: https://www.automotivelinux.org/wp-json/tec/v1
+    tags:
+      - Events
+      - Calendar
+      - Content
+    properties:
+      - type: OpenAPI
+        url: openapi/automotive-grade-linux-events-tec-v1-openapi.json
+      - type: Overlay
+        url: overlays/automotive-grade-linux-events-tec-v1-overlay.yaml
+      - type: Documentation
+        url: https://www.automotivelinux.org/wp-json/tec/v1/docs
+
+  - aid: automotive-grade-linux:agl-lava-api
+    name: AGL LAVA Test Lab API
+    description: >-
+      The REST API of AGL's public LAVA (Linaro Automated Validation Architecture) continuous
+      integration lab, where AGL images are booted and tested on real automotive hardware. Version
+      v0.2 under /api/v0.2/ exposes jobs, devices, device types, workers, tags, aliases and
+      permissions; a legacy XML-RPC root at /RPC2 still carries a few admin calls. Read operations
+      answer anonymously; submitting or cancelling a job requires a LAVA token. AGL publishes no
+      OpenAPI for it, but does publish its own agent-facing API reference and a four-language MCP
+      server that fronts it.
+    humanURL: https://lava.automotivelinux.org
+    baseURL: https://lava.automotivelinux.org/api/v0.2
+    tags:
+      - Continuous Integration
+      - Testing
+      - Automation
+      - Device Lab
+    properties:
+      - type: Documentation
+        url: skills/automotive-grade-linux-lava-skill.md
+      - type: AgentSkill
+        url: skills/automotive-grade-linux-lava-skill.md
+      - type: MCPServer
+        url: mcp/automotive-grade-linux-mcp.yml
+      - type: ToolCrosswalk
+        url: mcp/automotive-grade-linux-tool-crosswalk.yml
+
+  - aid: automotive-grade-linux:agl-gerrit-api
+    name: AGL Gerrit Code Review API
+    description: >-
+      AGL runs its own Gerrit instance as the authoritative home of the AGL source tree - 263
+      projects including meta-agl, AGL-repo and the agl-service-* application-framework bindings.
+      Its REST API is anonymously readable: projects, branches, changes and server configuration all
+      answer without a credential, which makes the AGL release branch set (guppy through vimba)
+      machine-discoverable. The contract is upstream Gerrit's, documented by the Gerrit project;
+      AGL operates the deployment and the data.
+    humanURL: https://gerrit.automotivelinux.org
+    baseURL: https://gerrit.automotivelinux.org/gerrit
+    tags:
+      - Source Code
+      - Code Review
+      - Developer Infrastructure
+    properties:
+      - type: Documentation
+        url: https://gerrit-review.googlesource.com/Documentation/rest-api.html
+
+  - aid: automotive-grade-linux:agl-instrument-cluster-api
+    name: AGL Instrument Cluster API
+    description: >-
+      The published interface specification between the Cluster UI in the HMI layer and the
+      IC-Service in the service layer of an AGL instrument cluster. Revision 1.0, officially released
+      2026-02-04 after four years of drafts. Defined against the C language ABI, with polling and
+      event usage models over pseudo shared memory, enum and macro constant definitions, and a signal
+      retrieval API documented per function. This is an in-process/IPC interface, not an HTTP API -
+      it has no base URL and no callable host, which is why none is recorded.
+    humanURL: https://docs.automotivelinux.org/en/master/05_APIs_and_Services/instrument-cluster/AGL-Instrument-Cluster-API-en/
+    tags:
+      - Instrument Cluster
+      - HMI
+      - C ABI
+      - Vehicle Signals
+    properties:
+      - type: APIReference
+        url: https://docs.automotivelinux.org/en/master/05_APIs_and_Services/instrument-cluster/AGL-Instrument-Cluster-API-en/
+      - type: Documentation
+        url: https://docs.automotivelinux.org/en/master/05_APIs_and_Services/01_Introduction/
+
 common:
+  - type: Packages
+    url: packages/automotive-grade-linux-packages.yml
+  - type: SDKs
+    url: packages/automotive-grade-linux-packages.yml
+  - type: MCPServer
+    url: mcp/automotive-grade-linux-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/automotive-grade-linux-tool-crosswalk.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: LLMsTxt
+    url: llms/automotive-grade-linux-llms.txt
+  - type: WellKnown
+    url: well-known/automotive-grade-linux-well-known.yml
+  - type: APICatalog
+    url: well-known/automotive-grade-linux-api-catalog.json
+  - type: Conventions
+    url: conventions/automotive-grade-linux-conventions.yml
+  - type: Lifecycle
+    url: lifecycle/automotive-grade-linux-lifecycle.yml
+  - type: ChangeLog
+    url: changelog/automotive-grade-linux-changelog.yml
+  - type: ErrorCatalog
+    url: errors/automotive-grade-linux-problem-types.yml
+  - type: Conformance
+    url: conformance/automotive-grade-linux-conformance.yml
+  - type: DataModel
+    url: data-model/automotive-grade-linux-data-model.yml
+  - type: VulnerabilityDisclosure
+    url: security/automotive-grade-linux-vulnerability-disclosure.yml
+  - type: Security
+    url: security/automotive-grade-linux-vulnerability-disclosure.yml
+  - type: Plans
+    url: plans/automotive-grade-linux-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/automotive-grade-linux-rate-limits.yml
+  - type: FinOps
+    url: finops/automotive-grade-linux-finops.yml
+  - type: APIReference
+    url: https://docs.automotivelinux.org/en/master/05_APIs_and_Services/instrument-cluster/AGL-Instrument-Cluster-API-en/
+  - type: GettingStarted
+    url: https://www.automotivelinux.org/software/download/get-started/
+  - type: Support
+    url: https://lists.automotivelinux.org/g/agl-main
+  - type: Community
+    url: https://discord.gg/ZztCaVeQVG
+  - type: Documentation
+    url: https://lf-automotivelinux.atlassian.net/wiki/spaces/HOME/
+  - type: SourceCode
+    url: https://gerrit.automotivelinux.org
+  - type: TermsOfService
+    url: https://www.linuxfoundation.org/terms
+  - type: PrivacyPolicy
+    url: https://www.linuxfoundation.org/privacy
+  - type: YouTube
+    url: https://www.youtube.com/channel/UC1axavgir413w00rwBHPAtQ
+  - type: Authentication
+    url: authentication/automotive-grade-linux-authentication.yml
   - type: IssueTracker
     url: https://github.com/COVESA/vsomeip/issues
   - type: Releases
@@ -207,3 +381,8 @@ common:
 maintainers:
   - FN: Kin Lane
     email: info@apievangelist.com
+x-enrichment:
+  date: '2026-09-14'
+  status: enriched
+  artifacts_added: 22
+  pass: local-v3

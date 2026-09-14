@@ -1,0 +1,43 @@
+generated: '2026-09-14'
+method: searched
+source: https://github.com/automotive-grade-linux/lava-mcp-toolkit/blob/main/lava-skill.md
+note: >-
+  Not authored by API Evangelist. AGL publishes this Agent Skill itself, in its own GitHub
+  organization, as lava-skill.md inside lava-mcp-toolkit (Apache-2.0). It is saved here verbatim.
+  Its opening instruction - do not embed credentials in prompts, code, or committed files - and its
+  three-access-method table are AGL's own words.
+skills:
+- name: lava-api-skill
+  title: LAVA API Skill
+  file: automotive-grade-linux-lava-skill.md
+  api: AGL LAVA REST API v0.2
+  base: https://lava.automotivelinux.org
+  source: https://raw.githubusercontent.com/automotive-grade-linux/lava-mcp-toolkit/main/lava-skill.md
+  license: Apache-2.0
+  published_by: Automotive Grade Linux
+  method: searched
+  covers:
+  - instance layout (REST root /api/v0.2/, XML-RPC /RPC2, /api/help/ introspection)
+  - token auth and where the credential lives for each of the three access methods
+  - the REST endpoint table (jobs, devices, devicetypes, workers, tags, aliases)
+  - XML-RPC-only calls with no REST equivalent
+  - submit-and-poll and failure-triage workflows
+  - error conventions (401/403 permission vs auth, 404 view permission, 400 definition validation)
+  - LAVA job-definition and test-shell-definition YAML authoring
+  operations:
+  - "GET /api/v0.2/jobs/"
+  - "POST /api/v0.2/jobs/"
+  - "GET /api/v0.2/jobs/{id}/"
+  - "GET /api/v0.2/jobs/{id}/logs/"
+  - "POST /api/v0.2/jobs/{id}/cancel/"
+  - "GET /api/v0.2/jobs/{id}/definition/"
+  - "POST /api/v0.2/jobs/{id}/resubmit/"
+  - "GET /api/v0.2/devices/"
+  - "GET /api/v0.2/devices/{hostname}/"
+  - "GET /api/v0.2/devicetypes/"
+  - "GET /api/v0.2/workers/"
+  - "GET /api/v0.2/tags/"
+  - "GET /api/v0.2/aliases/"
+  related:
+  - mcp/automotive-grade-linux-mcp.yml
+  - mcp/automotive-grade-linux-tool-crosswalk.yml

@@ -1,0 +1,107 @@
+generated: '2026-09-14'
+method: derived
+source: >-
+  openapi/automotive-grade-linux-events-tec-v1-openapi.json and
+  openapi/automotive-grade-linux-events-api-openapi.json (4xx/5xx response descriptions),
+  skills/automotive-grade-linux-lava-skill.md (AGL's own error-conventions section), and live
+  anonymous responses observed on 2026-09-14
+format: none
+format_note: >-
+  Neither surface uses RFC 9457 application/problem+json. The events API returns the WordPress REST
+  error object ({code, message, data.status}); LAVA returns Django REST Framework errors. The `code`
+  strings below were observed on live responses or are stated in AGL's own reference - none is invented.
+envelopes:
+- surface: events
+  media_type: application/json
+  shape: '{"code": "<machine string>", "message": "<human string>", "data": {"status": <http status>}}'
+  observed: '{"code":"rest_no_route","message":"No route was found matching the URL and request method.","data":{"status":404}}'
+- surface: lava
+  media_type: application/json
+  shape: Django REST Framework error body; the validation error text is returned verbatim on a rejected job definition
+problem_types:
+- id: rest_no_route
+  surface: events
+  status: 404
+  title: No route was found matching the URL and request method
+  observed_at: https://www.automotivelinux.org/wp-json/wp/v2/posts
+  remediation: >-
+    The route is not mounted. On this host every wp/v2 route is disabled even though /wp-json/ lists
+    the namespace - use tribe/events/v1 or tec/v1 instead.
+- id: rest_forbidden
+  surface: events
+  status: 401
+  title: Sorry, you are not allowed to do that
+  observed_at: https://www.automotivelinux.org/wp-json/wp-abilities/v1/abilities
+  remediation: Authenticate with WordPress Application Passwords over HTTP Basic; the Abilities API is not anonymous.
+- id: events-400
+  surface: events
+  status: 400
+  title: Invalid request
+  source_operations: [getEvents, createEvent, updateEvent, getOrganizers, getVenues, getSeries]
+  remediation: A query parameter or request body field failed validation; correct it and retry.
+- id: events-401
+  surface: events
+  status: 401
+  title: You are not logged in
+  source_operations: [createEvent, updateEvent, deleteEvent, createVenue, updateVenue, deleteVenue, createOrganizer, updateOrganizer, deleteOrganizer]
+  remediation: Supply HTTP Basic credentials (WordPress Application Password). All writes are authenticated.
+- id: events-403
+  surface: events
+  status: 403
+  title: You do not have permission to perform this action on this object
+  source_operations: [createEvent, updateEvent, deleteEvent, getEvent (by id/slug), createVenue, updateVenue, deleteVenue, createOrganizer, updateOrganizer, deleteOrganizer]
+  remediation: The credential authenticated but lacks the capability for this object. Not retryable.
+- id: events-404
+  surface: events
+  status: 404
+  title: The requested resource was not found
+  source_operations: [getEvents, getEvent, getVenues, getVenue, getOrganizers, getOrganizer, getSeries]
+  remediation: Wrong id or slug, or the object is not published.
+- id: events-410
+  surface: events
+  status: 410
+  title: The object has already been trashed
+  source_operations: [deleteEvent, deleteVenue, deleteOrganizer]
+  remediation: >-
+    A prior DELETE already soft-deleted this object. Pass force=true to bypass Trash and delete
+    permanently - that is irreversible over the API.
+- id: events-501
+  surface: events
+  status: 501
+  title: The object does not support trashing; set force=true to delete
+  source_operations: [deleteEvent, deleteVenue, deleteOrganizer]
+  remediation: Retry the DELETE with force=true, understanding it is permanent.
+- id: events-500
+  surface: events
+  status: 500
+  title: Failed to complete the operation
+  source_operations: [createEvent, updateEvent, deleteEvent, createVenue, updateVenue, deleteVenue, createOrganizer, updateOrganizer, deleteOrganizer]
+  remediation: Server-side failure; retry with backoff. No idempotency key exists, so verify state before retrying a create.
+- id: lava-401-403
+  surface: lava
+  status: [401, 403]
+  title: Bad or missing token, OR insufficient permission on the object
+  source: skills/automotive-grade-linux-lava-skill.md
+  remediation: >-
+    AGL states explicitly that this is "not just an auth bug" - LAVA has per-device and
+    per-devicetype submit permissions, so a valid token can still be refused for a specific device.
+    Check the permission, not only the credential.
+- id: lava-404-job
+  surface: lava
+  status: 404
+  title: Wrong job id, or no view permission on that job
+  source: skills/automotive-grade-linux-lava-skill.md
+  remediation: A 404 here does not prove the job is absent - it may exist and be invisible to this identity.
+- id: lava-400-submit
+  surface: lava
+  status: 400
+  title: Job definition failed schema or device-compatibility validation
+  source: skills/automotive-grade-linux-lava-skill.md
+  remediation: >-
+    The body carries the validation error. AGL's instruction to agents is to surface it verbatim to
+    the user and not guess at a fix.
+coverage:
+  operations_examined: 47
+  distinct_status_codes: [200, 201, 400, 401, 403, 404, 410, 500, 501]
+  rfc9457: false
+  error_code_registry_published: false

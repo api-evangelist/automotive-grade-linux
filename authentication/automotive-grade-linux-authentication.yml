@@ -1,0 +1,83 @@
+generated: '2026-09-14'
+method: searched
+source: >-
+  openapi/automotive-grade-linux-events-tec-v1-openapi.json (securitySchemes),
+  https://www.automotivelinux.org/wp-json/ (authentication block in the WordPress REST root),
+  skills/automotive-grade-linux-lava-skill.md (AGL's own auth section), and live anonymous probes
+  on 2026-09-14
+docs:
+- https://raw.githubusercontent.com/automotive-grade-linux/lava-mcp-toolkit/main/lava-skill.md
+- https://www.automotivelinux.org/wp-json/tec/v1/docs
+summary:
+  types:
+  - http
+  - token
+  oauth2: false
+  openid_connect: false
+  mutual_tls: false
+  note: >-
+    No OAuth, no OIDC, no mTLS anywhere in the AGL estate. All six hosts probed return 404 for
+    /.well-known/openid-configuration, /.well-known/oauth-authorization-server and
+    /.well-known/oauth-protected-resource, and AGL's own LAVA reference states plainly:
+    "No OAuth, no refresh flow. Tokens are static until revoked in the UI."
+schemes:
+- name: BasicAuth
+  type: http
+  scheme: basic
+  surface: AGL Events API (tec/v1 and tribe/events/v1)
+  applies_to: all write operations (POST, PUT, DELETE)
+  anonymous_read: true
+  implementation: >-
+    WordPress Application Passwords. The site's /wp-json/ root advertises
+    authentication.application-passwords.endpoints.authorization =
+    https://www.automotivelinux.org/wp-admin/authorize-application.php
+  sources:
+  - openapi/automotive-grade-linux-events-tec-v1-openapi.json
+  - https://www.automotivelinux.org/wp-json/
+- name: LavaToken
+  type: apiKey
+  in: header
+  header: Authorization
+  value_prefix: "Token "
+  surface: AGL LAVA Test Lab API
+  applies_to: job submission, cancellation and all writes; GET on jobs/, devices/, devicetypes/ is anonymous
+  rotation: manual - created and revoked in the LAVA web UI under API > Authentication Tokens
+  expiry: none; static until revoked
+  also_used_by: the legacy XML-RPC root, as https://<user>:<token>@lava.automotivelinux.org/RPC2
+  authorization_model: >-
+    Token identity is separate from object permission. AGL warns that a 401/403 on LAVA can mean the
+    token is fine but the identity lacks per-device or per-devicetype submit permission - an important
+    distinction for an agent deciding whether to retry with a different credential or stop.
+  sources:
+  - skills/automotive-grade-linux-lava-skill.md
+credential_handling_guidance:
+  published: true
+  detail: >-
+    Unusually for this catalog, AGL publishes guidance on where an agent's credential should live.
+    lava-skill.md opens with "Do not embed credentials in prompts, code, or committed files" and gives
+    a three-row table of where the token lives per access method: an environment variable for MCP
+    stdio, a server-side users.json mapping for the multi-tenant MCP server (the caller presents a
+    different bearer token that the server exchanges), and $LAVA_TOKEN / $LAVA_TOKEN_FILE /
+    ~/.config/lava/token for the shell scripts.
+  source: skills/automotive-grade-linux-lava-skill.md
+anonymous_surfaces:
+- url: https://www.automotivelinux.org/wp-json/tribe/events/v1/events
+  status: 200
+- url: https://www.automotivelinux.org/wp-json/tribe/events/v1/venues
+  status: 200
+- url: https://www.automotivelinux.org/wp-json/tec/v1/docs
+  status: 200
+- url: https://lava.automotivelinux.org/api/v0.2/
+  status: 200
+- url: https://lava.automotivelinux.org/api/v0.2/jobs/?format=json&limit=1
+  status: 200
+- url: https://gerrit.automotivelinux.org/gerrit/projects/
+  status: 200
+gated_surfaces:
+- url: https://www.automotivelinux.org/wp-json/wp-abilities/v1/abilities
+  status: 401
+  code: rest_forbidden
+- url: https://www.automotivelinux.org/wp-json/tribe/power-automate/v1/new-events
+  status: 401
+- url: https://www.automotivelinux.org/wp-json/tec/v1/events/calendar-embed
+  status: 401

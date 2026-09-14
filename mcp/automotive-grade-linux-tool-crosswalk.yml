@@ -1,0 +1,120 @@
+generated: '2026-09-14'
+method: derived
+source: >-
+  mcp/automotive-grade-linux-mcp.yml bound against the REST calls in
+  https://raw.githubusercontent.com/automotive-grade-linux/lava-mcp-toolkit/main/python/stdio/tools.py
+  and the endpoint table AGL publishes in skills/automotive-grade-linux-lava-skill.md
+note: >-
+  AGL's MCP tools front the LAVA REST API v0.2, for which AGL publishes NO OpenAPI - the DRF root at
+  /api/v0.2/ enumerates collections but serves no schema, and /api/v0.2/?format=openapi, /schema/ and
+  /swagger/ all 404. So `rest:` rows name METHOD + path rather than an operationId. Those bindings are
+  not inferred from prose: the call_tool dispatch in tools.py performs each request literally, so the
+  method/path pairs below are read from executable source. The two OpenAPIs in openapi/ describe a
+  different surface entirely (the AGL website's public events API), and share no operations with these
+  tools - that divergence is recorded in rest_only[] rather than force-mapped.
+surfaces:
+  openapi:
+  - file: openapi/automotive-grade-linux-events-api-openapi.json
+    base: https://www.automotivelinux.org/wp-json/tribe/events/v1/
+    gated: false
+    note: unrelated to the MCP tool set - the public AGL events API, read-anonymous
+  - file: openapi/automotive-grade-linux-events-tec-v1-openapi.json
+    base: https://www.automotivelinux.org/wp-json/tec/v1
+    gated: partial
+    note: reads anonymous, writes require WordPress Application Passwords (HTTP Basic)
+  rest:
+    name: AGL LAVA REST API v0.2
+    base: https://lava.automotivelinux.org/api/v0.2/
+    spec: none published
+    gated: partial
+    note: >-
+      GET on jobs/, devices/, devicetypes/, workers/, tags/, aliases/ answers anonymously
+      (verified 2026-09-14); submit/cancel and most writes require a LAVA token.
+  graphql: none
+  mcp:
+    transport: [stdio, http]
+    hosted_endpoint: none
+    gated: true
+    note: consumer-run; requires a LAVA token supplied out of band
+crosswalk:
+- tool: lava_list_jobs
+  category: jobs
+  rest: ["GET /api/v0.2/jobs/"]
+  binding: rest
+  confidence: high
+  note: filters state/health/device_type/submitter/ordering/limit/offset pass through as query params
+- tool: lava_get_job
+  category: jobs
+  rest: ["GET /api/v0.2/jobs/{job_id}/"]
+  binding: rest
+  confidence: high
+- tool: lava_job_logs
+  category: jobs
+  rest: ["GET /api/v0.2/jobs/{job_id}/logs/"]
+  binding: rest
+  confidence: high
+  note: "`start` maps to the ?start=N line offset LAVA documents for incremental log reads"
+- tool: lava_submit_job
+  category: jobs
+  rest: ["POST /api/v0.2/jobs/"]
+  binding: rest
+  confidence: high
+  note: 'body is {"definition": "<LAVA job YAML>"}; returns job_ids'
+- tool: lava_cancel_job
+  category: jobs
+  rest: ["POST /api/v0.2/jobs/{job_id}/cancel/"]
+  binding: rest
+  confidence: high
+- tool: lava_list_devices
+  category: devices
+  rest: ["GET /api/v0.2/devices/"]
+  binding: rest
+  confidence: high
+- tool: lava_get_device
+  category: devices
+  rest: ["GET /api/v0.2/devices/{hostname}/"]
+  binding: rest
+  confidence: high
+- tool: lava_raw_request
+  category: escape-hatch
+  rest: ["GET /api/v0.2/{path}", "POST /api/v0.2/{path}", "PUT /api/v0.2/{path}"]
+  binding: rest
+  confidence: high
+  note: >-
+    deliberate passthrough - reaches any v0.2 collection the named tools do not cover
+    (devicetypes/, workers/, tags/, aliases/, permissions/*, system/, remote-artifact-tokens/)
+mcp_only:
+- tool: lava_whoami
+  reason: >-
+    server-side identity introspection over the users.json mapping; there is no LAVA REST operation
+    for "which identity is this MCP bearer token bound to", and answering it is the point of the
+    multi-tenant variant.
+rest_only:
+- rest: "GET /api/v0.2/devicetypes/"
+  reason: reachable only through lava_raw_request; no dedicated tool
+- rest: "GET /api/v0.2/workers/"
+  reason: reachable only through lava_raw_request; no dedicated tool
+- rest: "GET /api/v0.2/tags/"
+  reason: reachable only through lava_raw_request; no dedicated tool
+- rest: "GET /api/v0.2/aliases/"
+  reason: reachable only through lava_raw_request; no dedicated tool
+- rest: "GET /api/v0.2/permissions/devices/, GET /api/v0.2/permissions/devicetypes/"
+  reason: reachable only through lava_raw_request; no dedicated tool
+- rest: "GET /api/v0.2/jobs/{id}/definition/, POST /api/v0.2/jobs/{id}/resubmit/"
+  reason: documented in AGL's own lava-skill.md endpoint table; no dedicated tool
+- rest: "XML-RPC /RPC2 (system.api_version, run_query, permission management)"
+  reason: >-
+    AGL documents these as having no REST equivalent; the MCP toolkit speaks REST only, so this
+    part of the LAVA surface is unreachable from an agent through these tools
+- rest: "The whole tribe/events/v1 + tec/v1 events surface (30 + 17 operations)"
+  reason: >-
+    a different AGL API on a different host with no MCP coverage at all - an agent can read AGL's
+    event calendar over HTTP but not through any published AGL tool
+coverage:
+  mcp_tools: 9
+  mapped_to_rest: 8
+  mcp_only: 1
+  rest_endpoints_documented: 13
+  rest_endpoints_with_a_dedicated_tool: 7
+  openapi_operations_in_repo: 47
+  openapi_operations_with_a_tool: 0

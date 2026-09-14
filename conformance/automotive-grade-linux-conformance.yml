@@ -1,0 +1,125 @@
+generated: '2026-09-14'
+method: searched
+source: >-
+  the two fetched OpenAPI documents in openapi/, the served /.well-known/api-catalog linkset, the
+  published /llms.txt, the lava-mcp-toolkit repository (SPDX headers, CycloneDX SBOMs,
+  docs/cra-compliance.md), and AGL's own documentation - all fetched 2026-09-14
+note: >-
+  Reward-only. Where AGL declares nothing, nothing is asserted. Entries are split into ones a machine
+  can verify from a fetched artifact (contract_declared: true) and ones that are project-level
+  implementation claims stated in AGL's own documentation but not signed into any contract.
+conformance:
+- id: openapi-3.0
+  conforms: true
+  contract_declared: true
+  evidence: >-
+    https://www.automotivelinux.org/wp-json/tribe/events/v1/doc declares "openapi": "3.0.0" and
+    https://www.automotivelinux.org/wp-json/tec/v1/docs declares "openapi": "3.0.4", both with
+    servers[] pointing at www.automotivelinux.org.
+- id: rfc9727-api-catalog
+  conforms: true
+  contract_declared: true
+  evidence: >-
+    https://www.automotivelinux.org/.well-known/api-catalog returns HTTP 200 with
+    Content-Type application/linkset+json and a linkset[] carrying anchor, service-desc, service-doc
+    and status link relations. This is a correctly-typed RFC 9727 / RFC 9264 document, not an HTML
+    shell - saved verbatim at well-known/automotive-grade-linux-api-catalog.json.
+- id: llmstxt
+  conforms: true
+  contract_declared: true
+  evidence: >-
+    https://www.automotivelinux.org/llms.txt returns HTTP 200 text/plain in llms.txt format
+    (H1 title, H2 sections, linked list items with descriptions), 5,599 bytes.
+- id: rfc7617-http-basic
+  conforms: true
+  contract_declared: true
+  evidence: >-
+    openapi/automotive-grade-linux-events-tec-v1-openapi.json declares
+    components.securitySchemes.BasicAuth {type: http, scheme: basic}, applied to every write operation.
+- id: model-context-protocol
+  conforms: true
+  contract_declared: true
+  evidence: >-
+    https://github.com/automotive-grade-linux/lava-mcp-toolkit implements MCP over JSON-RPC 2.0 in
+    four languages, with tools/list-style tool definitions carrying JSON Schema inputSchema
+    (python/stdio/tools.py). stdio and HTTP transports.
+- id: json-schema
+  conforms: true
+  contract_declared: true
+  evidence: MCP tool inputSchema objects in python/stdio/tools.py are JSON Schema objects; the OpenAPI components.schemas are JSON Schema dialect.
+- id: spdx
+  conforms: true
+  contract_declared: true
+  evidence: >-
+    SPDX-License-Identifier headers across all lava-mcp-toolkit sources, enforced in CI by
+    scripts/add-spdx-headers.py --check.
+- id: cyclonedx
+  conforms: true
+  contract_declared: true
+  evidence: >-
+    Per-language CycloneDX JSON SBOMs committed at
+    https://github.com/automotive-grade-linux/lava-mcp-toolkit/tree/main/sbom
+    (cpp.cdx.json, go.cdx.json, python.cdx.json, rust.cdx.json).
+- id: semver
+  conforms: true
+  contract_declared: true
+  evidence: lava-mcp-toolkit CHANGELOG.md states "versioning follows Semantic Versioning"; rust/server/Cargo.toml version = "0.1.0".
+- id: keep-a-changelog
+  conforms: true
+  contract_declared: true
+  evidence: lava-mcp-toolkit CHANGELOG.md states "Format follows Keep a Changelog 1.1.0" and uses its section structure.
+- id: eu-cyber-resilience-act
+  conforms: partial
+  contract_declared: false
+  evidence: >-
+    docs/cra-compliance.md in lava-mcp-toolkit maps the repository's artifacts to EU CRA essential
+    requirements. AGL describes it as "an engineering aid, not a legal certification" - recorded as a
+    published self-assessment, NOT as certified conformance.
+- id: some-ip
+  conforms: true
+  contract_declared: false
+  evidence: >-
+    AGL uses SOME/IP for service-oriented in-vehicle communication via vSomeIP
+    (https://github.com/COVESA/vsomeip), the reference implementation of the SOME/IP protocol.
+    This is an implementation claim in AGL's and COVESA's documentation, not a signature in any
+    machine-readable contract in this repository.
+- id: covesa-vss
+  conforms: true
+  contract_declared: false
+  evidence: >-
+    AGL documents integration with the COVESA Vehicle Signal Specification for standardized vehicle
+    signal access; no VSS document is served from an AGL host, so this is a documentation claim.
+- id: rfc9457-problem-details
+  conforms: false
+  contract_declared: false
+  evidence: >-
+    Neither surface returns application/problem+json. The events API returns the WordPress REST error
+    object; LAVA returns DRF errors. See errors/automotive-grade-linux-problem-types.yml.
+- id: oauth2
+  conforms: false
+  evidence: >-
+    No OAuth anywhere. /.well-known/oauth-authorization-server, /.well-known/oauth-protected-resource
+    and /.well-known/openid-configuration all 404 on every AGL host probed, and AGL's own LAVA
+    reference states "No OAuth, no refresh flow."
+- id: idempotency
+  conforms: false
+  evidence: no Idempotency-Key header or equivalent on any of the 47 operations; see conventions/automotive-grade-linux-conventions.yml
+- id: pagination
+  conforms: true
+  contract_declared: true
+  evidence: >-
+    tribe/events/v1 returns total, total_pages and rest_url/next_rest_url/previous_rest_url;
+    LAVA uses Django REST Framework limit/offset with count/next/previous/results.
+domain_standard:
+  market: automotive / software-defined vehicle
+  declared_in_contract: false
+  detail: >-
+    AGL's market has real standards - SOME/IP, COVESA VSS, AUTOSAR, ISO 26262 - and AGL participates
+    in several, but none of them is declared inside a machine-readable contract served from an AGL
+    host. The two contracts AGL does serve describe a website event calendar, whose market standard
+    would be iCalendar/schema.org Event, and they declare neither. Recorded as absent rather than
+    inferred from prose; this is reward-only and nothing is deducted for it.
+certifications: []
+certifications_note: >-
+  No SOC 2, ISO 27001, PCI, HIPAA or FedRAMP attestation is published, and none would be expected -
+  AGL ships source code and reference platforms, it does not operate a customer data service.

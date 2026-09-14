@@ -1,0 +1,208 @@
+generated: '2026-09-14'
+method: derived
+source: >-
+  openapi/automotive-grade-linux-events-api-openapi.json,
+  openapi/automotive-grade-linux-events-tec-v1-openapi.json,
+  skills/automotive-grade-linux-lava-skill.md (AGL-published),
+  live probes of https://www.automotivelinux.org/wp-json/ and https://lava.automotivelinux.org/api/v0.2/ on 2026-09-14
+scope_note: >-
+  AGL is an open source platform project, not an API product company. Two distinct callable HTTP
+  surfaces exist and they share almost no conventions, so each is described separately rather than
+  averaged into one fictional house style. Most of what AGL calls an "API" - the Application Framework
+  bindings, the SOME/IP vSomeIP services, the Instrument Cluster C ABI - are in-vehicle IPC interfaces
+  with no HTTP semantics at all, and nothing in this file applies to them.
+surfaces:
+- id: events
+  name: AGL Events API (The Events Calendar REST, tribe/events/v1 + tec/v1)
+  base: https://www.automotivelinux.org/wp-json/
+  spec: openapi/automotive-grade-linux-events-tec-v1-openapi.json
+- id: lava
+  name: AGL LAVA REST API v0.2
+  base: https://lava.automotivelinux.org/api/v0.2/
+  spec: none published
+
+auth_style:
+  events:
+    scheme: http basic
+    detail: >-
+      The tec/v1 spec declares one securityScheme, BasicAuth (http/basic). In practice that is
+      WordPress Application Passwords; the site advertises the authorization endpoint at
+      /wp-admin/authorize-application.php in its /wp-json/ root document. Reads on
+      tribe/events/v1 and tec/v1 GET operations are anonymous (verified 200 on /events, /venues,
+      /organizers, /categories on 2026-09-14); every write is Basic-authenticated.
+  lava:
+    scheme: static bearer token
+    detail: >-
+      "Authorization: Token <token>" on every REST call; the same token works for the legacy
+      XML-RPC root at /RPC2. AGL states there is no OAuth and no refresh flow - tokens are static
+      until revoked in the LAVA web UI. Read GETs on jobs/, devices/, devicetypes/ answer anonymously.
+
+idempotency:
+  coverage: none
+  scope: []
+  header: none
+  detail: >-
+    Neither surface offers replay protection. The events OpenAPIs declare no Idempotency-Key header
+    on any of their 47 operations, and AGL's own LAVA reference documents none - re-POSTing a job
+    definition to /api/v0.2/jobs/ creates a second job with a new id. An agent retrying a failed
+    submit after a timeout must first list jobs and match on job_name/submit_time to decide whether
+    the first attempt landed; nothing in either contract does that for it.
+  evidence:
+  - openapi/automotive-grade-linux-events-tec-v1-openapi.json (no idempotency parameter or header)
+  - skills/automotive-grade-linux-lava-skill.md (auth and error sections document no retry key)
+
+reversibility:
+  grade: documented
+  detail: >-
+    Both surfaces have a reversal path and neither states a window, so this grades `documented`,
+    not `verified`. Nothing here is an invented window - where AGL states no retention period,
+    none is recorded.
+  write_surfaces:
+  - surface: lava
+    write: "POST /api/v0.2/jobs/ (submit a test job)"
+    reversal: "POST /api/v0.2/jobs/{id}/cancel/"
+    tool: lava_cancel_job
+    window: >-
+      State-bounded rather than time-bounded: AGL describes cancel as applying to "a running or
+      queued job", and documents the job state machine as
+      Submitted/Scheduling/Scheduled/Running/Canceling/Finished. Once a job is Finished there is
+      nothing to cancel. No duration is published.
+    window_stated: partial
+    source: skills/automotive-grade-linux-lava-skill.md
+  - surface: lava
+    write: "POST /api/v0.2/jobs/{id}/resubmit/"
+    reversal: "POST /api/v0.2/jobs/{id}/cancel/ on the new job id"
+    window: same state bound as above
+    window_stated: partial
+    source: skills/automotive-grade-linux-lava-skill.md
+  - surface: events
+    write: "DELETE /events/{id}, /venues/{id}, /organizers/{id}"
+    reversal: >-
+      Soft delete by default. The spec's `force` query parameter defaults to false, "Whether to
+      bypass Trash and force deletion" - so a plain DELETE trashes rather than destroys, and 410
+      means "already trashed", 501 means the object does not support trashing and force=true is
+      required. force=true is irreversible over the API.
+    restore_operation: none
+    window: >-
+      NOT STATED. The contract names a Trash but publishes neither a restore operation nor a
+      retention period; recovery is a WordPress admin action outside the API.
+    window_stated: false
+    source: openapi/automotive-grade-linux-events-tec-v1-openapi.json#/paths/~1events~1{id}/delete
+  - surface: events
+    write: "POST /events, PUT /events/{id} (create / update)"
+    reversal: "PUT /events/{id} with the prior values, or DELETE"
+    window: no window; no version history or undo is exposed
+    window_stated: false
+
+dry_run_mode:
+  supported: false
+  detail: >-
+    No preview, validate-only or dry-run parameter on either surface. The closest thing is LAVA's
+    submit-time validation: a malformed job definition is rejected 400 with the validation error in
+    the body before any device is reserved, which AGL tells agents to surface verbatim rather than
+    guess at.
+
+pagination:
+  events:
+    style: page-number
+    params: [page, per_page]
+    response_fields: [total, total_pages, rest_url, next_rest_url, previous_rest_url]
+    detail: >-
+      tribe/events/v1 returns a page envelope carrying total, total_pages and absolute
+      rest_url/next_rest_url/previous_rest_url links alongside the collection.
+  lava:
+    style: DRF limit/offset
+    params: [limit, offset, page, ordering]
+    response_fields: [count, next, previous, results]
+    detail: >-
+      Standard Django REST Framework paging. AGL documents "?limit=&offset= or ?page=", "?ordering=field"
+      and "?format=json to force JSON over the browsable HTML view".
+
+filtering:
+  events:
+    detail: >-
+      Rich query filtering on collections - GET /events alone declares 22 query parameters
+      (start_date, end_date, search, categories, tags, venue, organizer, featured, status, ...).
+  lava:
+    detail: >-
+      Field filters passed as query params, e.g. ?device_type=<n>&health=Incomplete&ordering=-submit_time&limit=50
+      to find recent failures, ?device_type=<n>&health=Good&state=Idle to check availability before submit.
+
+versioning:
+  events:
+    style: path segment inside the namespace
+    detail: >-
+      Two generations are served side by side - the older tribe/events/v1 and the newer tec/v1,
+      with different schemas (tec/v1 adds operationIds, tags and a Series entity). Neither is marked
+      deprecated in its own document.
+  lava:
+    style: path segment
+    detail: >-
+      /api/v0.2/ is the current REST version; the XML-RPC root /RPC2 is the legacy interface and AGL
+      says plainly it is "legacy but still the only way to reach a few admin/device-mapping calls".
+  platform:
+    style: alphabetical codename per release
+    detail: >-
+      The AGL Unified Code Base itself versions by alphabetical fish codename - see
+      lifecycle/automotive-grade-linux-lifecycle.yml.
+
+error_envelope:
+  events:
+    shape: WordPress REST error object
+    fields: [code, message, data.status]
+    example_observed: '{"code":"rest_no_route","message":"No route was found matching the URL and request method.","data":{"status":404}}'
+    rfc9457: false
+  lava:
+    shape: DRF error object
+    rfc9457: false
+    detail: >-
+      AGL documents the semantics rather than a schema: 401/403 means a bad token OR insufficient
+      per-device/per-devicetype permission and is explicitly "not just an auth bug"; 404 on a job
+      can mean no view permission rather than a missing id; 400 on submit carries the definition
+      validation error in the body.
+  catalog: errors/automotive-grade-linux-problem-types.yml
+
+rate_limit_signaling:
+  published: false
+  detail: >-
+    No RateLimit-*, X-RateLimit-* or Retry-After headers were observed on any anonymous response
+    from either host, and neither AGL nor its docs publish a limit. See
+    rate-limits/automotive-grade-linux-rate-limits.yml.
+
+request_id_tracing:
+  supported: false
+  detail: No request-id or correlation header is documented or returned on either surface.
+
+metadata_and_expansion:
+  events:
+    detail: >-
+      The `_embedded`-style expansion of core WordPress is not available here because the core
+      wp/v2 namespace is disabled (see below); tribe/events/v1 instead inlines venue, organizer,
+      image and cost_details objects directly in each event.
+
+notable:
+- id: wp-v2-disabled
+  detail: >-
+    The site's /.well-known/api-catalog advertises https://www.automotivelinux.org/wp-json/ as its
+    service-desc and the WordPress REST API docs as its service-doc, and /wp-json/ lists wp/v2 among
+    its namespaces - but every wp/v2 route is switched off. GET /wp-json/wp/v2/posts, /pages, /media,
+    /users, /categories, /tags, /search, /comments and /settings all return 404 rest_no_route
+    anonymously (verified 2026-09-14), and no wp/v2 route appears in the 98-route index. The
+    published discovery document therefore over-promises what the host actually serves - the only
+    public content surface is the events API.
+- id: abilities-gated
+  detail: >-
+    The host runs the WordPress Abilities API (wp-abilities/v1), the agent-facing capability
+    registry, but it is authenticated - GET /wp-json/wp-abilities/v1/abilities returns 401
+    rest_forbidden anonymously. Nothing agent-readable is exposed through it today.
+- id: automation-triggers-gated
+  detail: >-
+    Zapier and Power Automate polling-trigger namespaces are mounted (tribe/zapier/v1,
+    tribe/power-automate/v1) with new-events / updated-events / canceled-events endpoints, but they
+    require authentication (400 / 401 anonymously). Their /doc endpoints are public.
+cross_links:
+  errors: errors/automotive-grade-linux-problem-types.yml
+  lifecycle: lifecycle/automotive-grade-linux-lifecycle.yml
+  authentication: authentication/automotive-grade-linux-authentication.yml
+  rate_limits: rate-limits/automotive-grade-linux-rate-limits.yml
+  mcp: mcp/automotive-grade-linux-mcp.yml

@@ -1,0 +1,48 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enrichment overlay - AGL Events API (tec/v1)
+  version: 1.0.0
+x-provenance:
+  generated: '2026-09-14'
+  method: generated
+  source: openapi/automotive-grade-linux-events-tec-v1-openapi.json
+  note: >-
+    Non-destructive. The target document is saved verbatim as fetched from
+    https://www.automotivelinux.org/wp-json/tec/v1/docs on 2026-09-14.
+extends: openapi/automotive-grade-linux-events-tec-v1-openapi.json
+actions:
+- target: $.info
+  update:
+    x-provider: Automotive Grade Linux
+    x-provider-slug: automotive-grade-linux
+    x-fetched-from: https://www.automotivelinux.org/wp-json/tec/v1/docs
+    x-fetched-on: '2026-09-14'
+    x-ownership-note: >-
+      info.contact names The Events Calendar (support@theeventscalendar.com), the plugin vendor that
+      generates this document. The deployment is AGL's - servers[] is
+      https://www.automotivelinux.org/wp-json/tec/v1 on AGL's own domain, serving AGL's own events.
+    x-generation-note: >-
+      Two generations of the same API are served side by side on this host: the older tribe/events/v1
+      (30 operations, no operationIds) and this tec/v1 (17 operations, operationIds, tags, a Series
+      entity). Neither is marked deprecated.
+- target: $.servers
+  update:
+  - url: https://www.automotivelinux.org/wp-json/tec/v1
+    description: Production - Automotive Grade Linux public event calendar
+- target: $.components.securitySchemes.BasicAuth
+  update:
+    x-implementation: >-
+      WordPress Application Passwords. The site advertises the authorization endpoint at
+      https://www.automotivelinux.org/wp-admin/authorize-application.php in its /wp-json/ root document.
+- target: $.paths['/events'].get
+  update:
+    x-anonymous-read: true
+    x-verified: '2026-09-14'
+- target: $.paths['/series'].get
+  update:
+    x-verified: '2026-09-14'
+    x-verified-status: 500
+    x-verified-note: >-
+      GET /series returned HTTP 500 with an HTML body on an anonymous request. The operation is
+      declared in the contract but does not answer on this deployment - recorded as observed, not
+      as an error in the spec.

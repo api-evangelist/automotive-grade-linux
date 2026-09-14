@@ -4,151 +4,41 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Automotive Grade Linux
 providerId: automotive-grade-linux
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-tags:
-  - Automotive
-  - Connected Vehicles
-  - Embedded Linux
-  - In-Vehicle Infotainment
-  - IoT
-  - Linux Foundation
-  - Open Source
-  - Software Defined Vehicles
-description: Machine-readable plans and pricing scaffold for this API provider. Conforms to the API Commons
-  Plans schema. Tier limits and prices are scaffold defaults; replace with provider-published values.
-plans:
-  - id: automotive-grade-linux-free
-    name: Free
-    type: freemium
-    description: Free entry tier for the Automotive Grade Linux API surface. Intended for evaluation,
-      prototyping, and low-volume integrations. Real limits and pricing must be reconciled with the provider's
-      published plan documentation.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota across all included endpoints
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 1000
-        timeFrame: month
-        geo: global
-        domains: []
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the free tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 10
-        timeFrame: minute
-        geo: global
-        domains: []
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-    elements:
-      - name: Public Documentation
-      - name: Community Support
-      - name: Sandbox Access
-      - name: AGL Application Framework API
-      - name: AGL VSOMEIP Service API
-      - name: AGL SoDeV Software Defined Vehicle API
-  - id: automotive-grade-linux-pro
-    name: Professional
-    type: paid
-    description: Production tier for Automotive Grade Linux. Provides higher quotas, priority support,
-      and access to the broader API portfolio. Pricing placeholder; align with the provider's pricing
-      page.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 100000
-        timeFrame: month
-        geo: global
-        domains: []
-        unit: 1
-        price: TBD
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the professional tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 100
-        timeFrame: minute
-        geo: global
-        domains: []
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Overage
-        description: Per-request price after monthly quota is exceeded
-        name: overage
-        type: metered
-        metric: requests
-        limit: -1
-        timeFrame: month
-        geo: global
-        domains: []
-        unit: 1000
-        price: TBD
-        userMultiplied: false
-    elements:
-      - name: All Production Endpoints
-      - name: Email Support
-      - name: SLA Targets
-      - name: Webhook Subscriptions
-      - name: AGL Application Framework API
-      - name: AGL VSOMEIP Service API
-      - name: AGL SoDeV Software Defined Vehicle API
-  - id: automotive-grade-linux-enterprise
-    name: Enterprise
-    type: enterprise
-    description: Custom-negotiated tier for Automotive Grade Linux. Includes dedicated capacity, contractual
-      SLAs, security review, data residency options, and named technical account management.
-    entries:
-      - label: API Requests
-        description: Negotiated request volume; -1 indicates uncapped subject to fair use
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: -1
-        timeFrame: month
-        geo: configurable
-        domains: []
-        unit: 1
-        price: custom
-        userMultiplied: false
-      - label: Rate Limit
-        description: Negotiated burst and steady-state rate
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 1000
-        timeFrame: minute
-        geo: configurable
-        domains: []
-        unit: 1
-        price: custom
-        userMultiplied: false
-    elements:
-      - name: Unlimited / Negotiated Volume
-      - name: 24/7 Dedicated Support
-      - name: Contractual SLA
-      - name: Security & Compliance Review
-      - name: Dedicated Account Manager
-      - name: Custom Data Residency
-      - name: AGL Application Framework API
-      - name: AGL VSOMEIP Service API
-      - name: AGL SoDeV Software Defined Vehicle API
+modified: '2026-09-14'
+generated: '2026-09-14'
+method: searched
+source: >-
+  https://www.automotivelinux.org/about/join-2/ (200), https://www.automotivelinux.org/software/download/ (200),
+  https://www.automotivelinux.org/ (200) - probed 2026-09-14
+plan_count: 0
+description: >-
+  Automotive Grade Linux publishes no API plans and no API pricing, because it sells no API. AGL is a
+  Linux Foundation collaborative project: the software (meta-agl, the agl-service-* bindings, the SoDeV
+  reference platform, lava-mcp-toolkit) is free and open source, and the two callable HTTP surfaces
+  found in this profile - the public event calendar at www.automotivelinux.org/wp-json/ and the LAVA
+  test lab at lava.automotivelinux.org - are community infrastructure offered without a commercial tier.
+plans: []
+membership:
+  note: >-
+    AGL has corporate membership, which is the only thing resembling a commercial tier, and it is NOT
+    an API plan. The Join page publishes no fee schedule and no membership levels with prices - it
+    describes member benefits (the All Member Meeting, the AGL booth at CES and Embedded World, a
+    Vendor Marketplace listing) and ends in a contact form. Individuals are directed to the
+    documentation instead of to any paid tier.
+  url: https://www.automotivelinux.org/about/join-2/
+  status: 200
+  published_price: false
+  named_levels: [Advisory Board, Steering Committee]
+  named_levels_note: >-
+    Read from the site's own members_category taxonomy in /llms.txt; these are governance bodies
+    listed on the site, not priced membership SKUs.
+x-superseded:
+  date: '2026-09-14'
+  detail: >-
+    This file previously contained a three-tier Free/Professional/Enterprise scaffold with invented
+    request quotas (1,000/month free, 100,000/month professional), invented per-minute rate limits and
+    "TBD" prices, written by a bulk sweep dated 2026-05-04 and never harvested from AGL. None of it
+    was real. It has been replaced with the measured result: there are no plans.
 maintainers:
-  - FN: Kin Lane
-    email: info@apievangelist.com
+- FN: Kin Lane
+  email: info@apievangelist.com

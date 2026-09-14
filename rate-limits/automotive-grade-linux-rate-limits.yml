@@ -4,102 +4,52 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Automotive Grade Linux
 providerId: automotive-grade-linux
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-tags:
-  - Automotive
-  - Connected Vehicles
-  - Embedded Linux
-  - In-Vehicle Infotainment
-  - IoT
-  - Linux Foundation
-  - Open Source
-  - Software Defined Vehicles
-  - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Automotive Grade Linux API surface. Captures
-  per-tier quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold values
-  to be replaced with published provider limits.
+modified: '2026-09-14'
+generated: '2026-09-14'
+method: probed
+source: >-
+  live anonymous responses from https://www.automotivelinux.org/wp-json/tribe/events/v1/events and
+  https://lava.automotivelinux.org/api/v0.2/jobs/ plus the two OpenAPIs in openapi/ and
+  skills/automotive-grade-linux-lava-skill.md - 2026-09-14
+limit_count: 0
+description: >-
+  No rate limits are published and none are signalled at runtime. Neither surface returned a
+  RateLimit-*, X-RateLimit-* or Retry-After header on an anonymous 200, neither OpenAPI declares a 429
+  response on any of its 47 operations, and AGL's own LAVA API reference - which documents auth,
+  pagination, filtering and error conventions in detail - says nothing about throttling. An agent
+  integrating here has no runtime signal to back off on and must self-govern.
 headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+  limit: null
+  remaining: null
+  reset: null
+  retryAfter: null
+  policy: null
+  observed: false
 responseCodes:
-  throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
-limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - AGL Application Framework API
-      - AGL VSOMEIP Service API
-      - AGL SoDeV Software Defined Vehicle API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - AGL Application Framework API
-      - AGL VSOMEIP Service API
-      - AGL SoDeV Software Defined Vehicle API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - AGL Application Framework API
-      - AGL VSOMEIP Service API
-      - AGL SoDeV Software Defined Vehicle API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - AGL Application Framework API
-      - AGL VSOMEIP Service API
-      - AGL SoDeV Software Defined Vehicle API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - AGL Application Framework API
-      - AGL VSOMEIP Service API
-      - AGL SoDeV Software Defined Vehicle API
-policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+  throttled: null
+  note: 429 appears in neither OpenAPI nor any observed response
+limits: []
+policies: []
+surfaces_probed:
+- url: https://www.automotivelinux.org/wp-json/tribe/events/v1/events
+  status: 200
+  rate_limit_headers: none
+- url: https://www.automotivelinux.org/wp-json/tec/v1/docs
+  status: 200
+  rate_limit_headers: none
+- url: https://lava.automotivelinux.org/api/v0.2/jobs/?format=json&limit=1
+  status: 200
+  rate_limit_headers: none
+- url: https://lava.automotivelinux.org/api/v0.2/devicetypes/?format=json&limit=1
+  status: 200
+  rate_limit_headers: none
+x-superseded:
+  date: '2026-09-14'
+  detail: >-
+    This file previously contained five invented tier limits (10/min free, 100/min professional,
+    1,000/min enterprise with a 5,000 burst) and a full X-RateLimit-* header set AGL does not send,
+    written by a bulk sweep dated 2026-05-04. None of it was real. Replaced with the measured result:
+    no published limits, no runtime headers.
 maintainers:
-  - FN: Kin Lane
-    email: info@apievangelist.com
+- FN: Kin Lane
+  email: info@apievangelist.com

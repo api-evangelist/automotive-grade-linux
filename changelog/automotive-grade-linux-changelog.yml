@@ -1,0 +1,66 @@
+generated: '2026-09-14'
+method: searched
+source: >-
+  https://raw.githubusercontent.com/automotive-grade-linux/lava-mcp-toolkit/main/CHANGELOG.md and
+  https://www.automotivelinux.org/feed/ (dated announcements), fetched 2026-09-14
+summary: >-
+  AGL publishes no per-release changelog for the Unified Code Base platform itself - releases are
+  announced as dated posts in the newsroom, and the code history lives in gerrit. It does publish one
+  true dated changelog: lava-mcp-toolkit/CHANGELOG.md, Keep a Changelog 1.1.0 format with SemVer,
+  covering its first-party MCP server. Both are recorded below and kept separate.
+changelogs:
+- id: lava-mcp-toolkit
+  scheme: Keep a Changelog 1.1.0 + SemVer
+  url: https://github.com/automotive-grade-linux/lava-mcp-toolkit/blob/main/CHANGELOG.md
+  current_version: 0.1.0
+  entries:
+  - version: Unreleased
+    date: null
+    breaking: false
+    additions:
+    - CI workflow building and testing all four language implementations on every PR, plus Docker/Caddy config validation, SPDX header checks and template YAML validation
+    - Tag-triggered (v*.*.*) release workflow gated behind a required human reviewer before a GitHub Release or GHCR image push
+    - CODEOWNERS and a pull request template
+    - scripts/github-setup.sh to apply the branch-protection and environment settings the workflows rely on
+    - "--check (report-only) mode on scripts/add-spdx-headers.py"
+    - templates/job-generic-device.yaml reworked to an NBD-root boot pattern; the previous TFTP+NFS-root content split out to templates/job-generic-device-tftp-nfsroot.yaml; templates/examples/ added with two verbatim known-good reference jobs
+    - deploy/caddy/Caddyfile moved out of the repository root
+  - version: 0.1.0
+    date: '2026-08-27'
+    breaking: false
+    additions:
+    - Four language implementations (Go, Python, Rust, C++) of an MCP server exposing LAVA REST access as tools, each with a stdio single-identity variant and a multi-tenant HTTP server variant
+    - "lava-skill.md: the LAVA API reference covering REST and XML-RPC surface, job and test-shell definition authoring, and the three access methods"
+    - templates/ job and test-definition YAML, scripts/ for token resolution, submit and poll
+    - docs/ covering architecture, deployment, testing, security, troubleshooting, licensing and EU Cyber Resilience Act mapping
+    - 152 automated tests across the four implementations, each with at least one real socket or HTTP integration test
+    - Hot-reload of users.json in rust/server via POST /admin/reload, gated on LAVA_MCP_RELOAD_TOKEN
+    - docker-compose.yml with an optional Caddy TLS profile
+    - Apache-2.0 LICENSE, NOTICE, SPDX headers, per-language CycloneDX SBOMs, SECURITY.md, CONTRIBUTING.md
+    known_limitations:
+    - Hot-reload exists only in the Rust server variant
+    - Rust and C++ server variants have no HTTP keep-alive; one thread per connection
+    - The reload token and LAVA_MCP_ADDR still require a restart to change
+- id: platform-releases
+  scheme: dated newsroom announcements, no structured changelog
+  url: https://www.automotivelinux.org/news/announcements/
+  entries:
+  - version: SoDeV reference platform (initial version)
+    date: '2026-05-13'
+    breaking: false
+    highlights: AGL releases the initial version of the open source SoDeV reference platform for software-defined vehicles and welcomes five new members
+    url: https://www.automotivelinux.org/announcements/automotive-grade-linux-releases-open-source-sodev-reference-platform-for-software-defined-vehicles-and-welcomes-five-new-members/
+  - version: SoDeV reference platform (launch)
+    date: '2025-12-05'
+    breaking: false
+    highlights: AGL launches the open source SoDeV reference platform to accelerate software-defined vehicle development
+    url: https://www.automotivelinux.org/announcements/sodev/
+  - version: Trout (UCB release 20)
+    date: '2025-12-04'
+    breaking: false
+    highlights: "\"Terrific Trout Marks the 20th Release of the AGL Platform\" - the 20th Unified Code Base release"
+    url: https://www.automotivelinux.org/announcements/ucb-20/
+  note: >-
+    These are announcements, not a changelog: they carry no per-component change list, no breaking
+    -change section and no diff against the prior release. Recorded because they are the only dated
+    release record AGL publishes for the platform.

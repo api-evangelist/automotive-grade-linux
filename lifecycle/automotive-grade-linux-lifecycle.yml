@@ -1,0 +1,111 @@
+generated: '2026-09-14'
+method: searched
+source: >-
+  https://gerrit.automotivelinux.org/gerrit/projects/apps%2Fagl-service-hvac/branches/ (release branch
+  list), https://docs.automotivelinux.org/en/<version>/ probes, https://www.automotivelinux.org/software/download/,
+  https://raw.githubusercontent.com/automotive-grade-linux/lava-mcp-toolkit/main/CHANGELOG.md
+versioning:
+  platform:
+    scheme: alphabetical codename per Unified Code Base release
+    detail: >-
+      AGL names each UCB release after an aquatic animal, advancing one letter per release. The
+      release branches present on every AGL gerrit project, read from the Gerrit REST branches
+      endpoint on 2026-09-14, are: guppy, halibut, icefish, jellyfish, koi, lamprey, marlin,
+      needlefish, octopus, pike, quillback, ricefish, salmon, trout, unagi, vimba - plus master.
+    releases_observed:
+    - guppy
+    - halibut
+    - icefish
+    - jellyfish
+    - koi
+    - lamprey
+    - marlin
+    - needlefish
+    - octopus
+    - pike
+    - quillback
+    - ricefish
+    - salmon
+    - trout
+    - unagi
+    - vimba
+    newest_branch: vimba
+    newest_branch_note: >-
+      Inferred from AGL's own alphabetical scheme, not from a release announcement - AGL's download
+      page says only "the latest stable release" and names no version. Treat `vimba` as the newest
+      branch observed, not as a confirmed current release.
+    documentation_versions_served:
+    - version: master
+      url: https://docs.automotivelinux.org/en/master/
+      status: 200
+    - version: unagi
+      url: https://docs.automotivelinux.org/en/unagi/
+      status: 200
+    - version: trout
+      url: https://docs.automotivelinux.org/en/trout/
+      status: 200
+    - version: salmon
+      url: https://docs.automotivelinux.org/en/salmon/
+      status: 200
+    - version: quillback
+      url: https://docs.automotivelinux.org/en/quillback/
+      status: 200
+    - version: vimba
+      url: https://docs.automotivelinux.org/en/vimba/
+      status: 404
+      note: a release branch exists in gerrit but no documentation set is published for it yet
+  events_api:
+    scheme: namespace path version
+    detail: tribe/events/v1 and tec/v1 are served side by side; neither declares a deprecation in its own OpenAPI
+  lava_api:
+    scheme: path version
+    current: v0.2
+    legacy: XML-RPC at /RPC2, which AGL documents as legacy but still required for a few admin calls
+  mcp_toolkit:
+    scheme: semver
+    current: 0.1.0
+    released: '2026-08-27'
+    detail: >-
+      lava-mcp-toolkit follows Keep a Changelog + SemVer and carries an [Unreleased] section. No git
+      tag and no GitHub Release exist yet - the release workflow fires on a v*.*.* tag behind a
+      required human approval, and has not run.
+deprecation_policy:
+  published: false
+  detail: >-
+    No deprecation or sunset policy was found. No Deprecation or Sunset response header (RFC 8594) is
+    declared in either OpenAPI, no operation is marked deprecated: true, and neither the AGL site nor
+    the documentation publishes an end-of-life schedule for UCB releases. Older release branches stay
+    in gerrit indefinitely; documentation for several of them (ricefish, vimba) simply is not served.
+status_page:
+  published: false
+  detail: >-
+    No status page. https://status.automotivelinux.org does not resolve (connection failure,
+    curl exit status 0 with no HTTP response, 2026-09-14) and no status host is linked from the site
+    or the documentation. Neither the LAVA instance nor the website publishes uptime.
+sla:
+  published: false
+  detail: >-
+    None. AGL is a Linux Foundation collaborative project; the software carries open source warranty
+    disclaimers and the public LAVA lab and website are provided as community infrastructure with no
+    service commitment.
+support_channels:
+- type: mailing-list
+  url: https://lists.automotivelinux.org/g/agl-main
+  status: 200
+- type: chat
+  url: https://discord.gg/ZztCaVeQVG
+  status: 200
+- type: wiki
+  url: https://lf-automotivelinux.atlassian.net/wiki/spaces/HOME/
+  status: 200
+- type: issue-tracker
+  url: https://jira.automotivelinux.org
+  status: 200
+- type: code-review
+  url: https://gerrit.automotivelinux.org
+  status: 200
+deprecated_operations: []
+deprecated_operations_note: >-
+  Derived from openapi/automotive-grade-linux-events-api-openapi.json and
+  openapi/automotive-grade-linux-events-tec-v1-openapi.json - zero of the 47 operations carry
+  deprecated: true.

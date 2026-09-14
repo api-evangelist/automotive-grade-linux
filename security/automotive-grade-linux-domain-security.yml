@@ -1,17 +1,22 @@
-generated: '2026-07-11'
+generated: '2026-09-14'
 method: probed
 source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
 hosts:
 - host: www.automotivelinux.org
   https: true
   tls_version: TLSv1.3
-  cert_expires: Sep  6 18:54:28 2026 GMT
+  cert_expires: Nov  5 17:59:39 2026 GMT
   hsts: true
   hsts_max_age: 300
 - host: docs.automotivelinux.org
   https: true
   tls_version: TLSv1.3
-  cert_expires: Aug 28 08:21:02 2026 GMT
+  cert_expires: Oct 26 09:46:33 2026 GMT
+  hsts: false
+- host: lava.automotivelinux.org
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov 27 17:07:36 2026 GMT
   hsts: false
 domains:
 - domain: automotivelinux.org

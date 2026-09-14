@@ -1,0 +1,54 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enrichment overlay - AGL Events API (tribe/events/v1)
+  version: 1.0.0
+x-provenance:
+  generated: '2026-09-14'
+  method: generated
+  source: openapi/automotive-grade-linux-events-api-openapi.json
+  note: >-
+    Non-destructive. The target document is saved verbatim as fetched from
+    https://www.automotivelinux.org/wp-json/tribe/events/v1/doc and is never mutated. This overlay
+    records only what API Evangelist established by probing on 2026-09-14 - ownership provenance,
+    anonymous readability, and the absence of operationIds - so a consumer can apply it without
+    losing the provider's own bytes.
+extends: openapi/automotive-grade-linux-events-api-openapi.json
+actions:
+- target: $.info
+  update:
+    x-provider: Automotive Grade Linux
+    x-provider-slug: automotive-grade-linux
+    x-fetched-from: https://www.automotivelinux.org/wp-json/tribe/events/v1/doc
+    x-fetched-on: '2026-09-14'
+    x-ownership-note: >-
+      info.title and the plugin vendor naming belong to The Events Calendar, the WordPress plugin that
+      generates this document. The API itself is AGL's - servers[] is
+      https://www.automotivelinux.org/wp-json/tribe/events/v1/, the host is AGL's own domain, the data
+      returned is AGL's own event calendar (All Member Meeting, Automotive Linux Summit, CES, Embedded
+      World), and AGL's own /.well-known/api-catalog points at this wp-json root as its service-desc.
+      This is the self-hosted/templated-server case, not a spec belonging to another company.
+    x-agl-doc-endpoint: https://www.automotivelinux.org/wp-json/tribe/events/v1/doc
+- target: $.servers
+  update:
+  - url: https://www.automotivelinux.org/wp-json/tribe/events/v1/
+    description: Production - Automotive Grade Linux public event calendar
+- target: $.paths['/events'].get
+  update:
+    x-anonymous-read: true
+    x-verified: '2026-09-14'
+    x-verified-status: 200
+- target: $.paths['/venues'].get
+  update:
+    x-anonymous-read: true
+    x-verified: '2026-09-14'
+    x-verified-status: 200
+- target: $.paths['/organizers'].get
+  update:
+    x-anonymous-read: true
+    x-verified: '2026-09-14'
+    x-verified-status: 200
+- target: $.paths['/categories'].get
+  update:
+    x-anonymous-read: true
+    x-verified: '2026-09-14'
+    x-verified-status: 200
