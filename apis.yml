@@ -239,6 +239,8 @@ apis:
     https://docs.automotivelinux.org/en/master/#0_Getting_Started/2_Developing_an_AGL_Application/
   baseURL: https://www.automotivelinux.org/wp-json/tribe/events/v1
   tags:
+  - Event
+  tags_raw:
   - Events
   properties:
   - type: OpenAPI
