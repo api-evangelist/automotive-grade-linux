@@ -1,0 +1,250 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Events Calendar REST Categories API
+  description: The Events Calendar REST API allows accessing upcoming events information easily and conveniently.
+servers:
+- url: https://www.automotivelinux.org/wp-json/tribe/events/v1/
+tags:
+- name: Categories
+paths:
+  /categories:
+    get:
+      parameters:
+      - in: query
+        schema:
+          type: integer
+        description: The archive page to return
+        required: false
+        name: page
+      - in: query
+        schema:
+          type: integer
+        description: The number of event categories to return on each page
+        required: false
+        name: per_page
+      - in: query
+        schema:
+          type: string
+        description: Limit results to those matching a string
+        required: false
+        name: search
+      - in: query
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Ensure result set exclude specific IDs
+        required: false
+        name: exclude
+      - in: query
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Limit result set to specific IDs
+        required: false
+        name: include
+      - in: query
+        schema:
+          type: string
+        description: Order sort attribute ascending or descending
+        required: false
+        name: order
+      - in: query
+        schema:
+          type: string
+        description: Sort collection by term attribute
+        required: false
+        name: orderby
+      - in: query
+        schema:
+          type: boolean
+        description: Whether to hide terms not assigned to any posts
+        required: false
+        name: hide_empty
+      - in: query
+        schema:
+          type: integer
+        description: Limit result set to terms assigned to a specific parent
+        required: false
+        name: parent
+      - in: query
+        schema:
+          type: integer
+        description: Limit result set to terms assigned to a specific post
+        required: false
+        name: post
+      - in: query
+        schema:
+          type: integer
+        description: Limit result set to terms assigned to a specific event (an alias of the "post" parameter)
+        required: false
+        name: event
+      - in: query
+        schema:
+          type: string
+        description: Limit result set to terms with a specific slug
+        required: false
+        name: slug
+      responses:
+        '200':
+          description: Returns all the event categories matching the search criteria
+          content:
+            application/json:
+              schema:
+                title: categories
+                type: array
+                items:
+                  $ref: '#/components/schemas/Term'
+        '400':
+          description: One or more of the specified query variables has a bad format
+        '404':
+          description: The requested page was not found.
+      tags:
+      - Categories
+      summary: Get categories
+      x-summary-source: derived
+      operationId: getCategories
+      x-operation-id-source: derived
+  /categories/{id}:
+    get:
+      parameters:
+      - in: path
+        schema:
+          type: integer
+        description: the event category term ID
+        required: true
+        name: id
+      responses:
+        '200':
+          description: Returns the data of the event category with the specified term ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Term'
+        '400':
+          description: The event category term ID is missing.
+        '404':
+          description: An event category with the specified term ID does not exist.
+      tags:
+      - Categories
+      summary: Get categories by id
+      x-summary-source: derived
+      operationId: getCategoriesById
+      x-operation-id-source: derived
+    post:
+      parameters:
+      - in: path
+        schema:
+          type: integer
+        description: the event category term ID
+        required: true
+        name: id
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id:
+                  description: the event category term ID
+                  type: integer
+                name:
+                  description: The event category name
+                  type: string
+                description:
+                  description: The event category description
+                  type: string
+                slug:
+                  description: The event category slug
+                  type: string
+                parent:
+                  description: The event category slug
+                  type: integer
+      responses:
+        '200':
+          description: Returns the data of the updated event category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Term'
+        '201':
+          description: Returns the data of the created event category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Term'
+        '400':
+          description: A required parameter is missing or an input parameter is in the wrong format
+        '403':
+          description: The user is not authorized to create event categories
+      tags:
+      - Categories
+      summary: Create categories by id
+      x-summary-source: derived
+      operationId: postCategoriesById
+      x-operation-id-source: derived
+    delete:
+      parameters:
+      - in: path
+        schema:
+          type: integer
+        description: the event category term ID
+        required: true
+        name: id
+      responses:
+        '200':
+          description: Deletes an event category and returns its data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Term'
+        '400':
+          description: The event category term ID is missing or does not exist.
+        '403':
+          description: The current user cannot delete the event category with the specified term ID.
+        '410':
+          description: The event category with the specified term ID has been deleted already.
+        '500':
+          description: The event category with the specified term ID could not be deleted.
+      tags:
+      - Categories
+      summary: Delete categories by id
+      x-summary-source: derived
+      operationId: deleteCategoriesById
+      x-operation-id-source: derived
+components:
+  schemas:
+    Term:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The WordPress term ID
+        name:
+          type: string
+          description: The term name
+        slug:
+          type: string
+          description: The term slug
+        taxonomy:
+          type: string
+          description: The taxonomy the term belongs to
+        description:
+          type: string
+          description: The term description
+        parent:
+          type: integer
+          description: The term parent term if any
+        count:
+          type: integer
+          description: The number of posts associated with the term
+        url:
+          type: string
+          description: The URL to the term archive page
+        urls:
+          type: array
+          items:
+            type: string
+          description: A list of links to the term own, archive and parent REST URL

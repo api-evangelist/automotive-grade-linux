@@ -1,0 +1,21 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Events Calendar REST Doc API
+  description: The Events Calendar REST API allows accessing upcoming events information easily and conveniently.
+servers:
+- url: https://www.automotivelinux.org/wp-json/tribe/events/v1/
+tags:
+- name: Doc
+paths:
+  /doc:
+    get:
+      responses:
+        '200':
+          description: Returns the documentation for The Events Calendar REST API in Swagger consumable format.
+      tags:
+      - Doc
+      summary: Get doc
+      x-summary-source: derived
+      operationId: getDoc
+      x-operation-id-source: derived

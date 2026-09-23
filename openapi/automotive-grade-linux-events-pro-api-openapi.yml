@@ -1,0 +1,331 @@
+openapi: 3.2.0
+info:
+  title: Events Calendar REST Events Pro API
+  version: 1.0.0
+  description: The Events Calendar REST API allows accessing upcoming events information easily and conveniently.
+  contact:
+    name: The Events Calendar
+    email: support@theeventscalendar.com
+servers:
+- url: https://www.automotivelinux.org/wp-json/tec/v1
+tags:
+- name: Events Pro
+  description: These operations are introduced by Events Pro.
+paths:
+  /series:
+    get:
+      summary: Retrieve Series
+      security: []
+      description: Returns a list of series
+      operationId: getSeries
+      tags:
+      - Events Pro
+      parameters:
+      - name: page
+        in: query
+        description: The collection page number.
+        required: false
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+        example: 1
+      - name: event_post_id
+        in: query
+        description: Limit result set to series assigned to specific event post IDs.
+        required: false
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+          uniqueItems: true
+        example:
+        - 126
+      - name: per_page
+        in: query
+        description: Maximum number of items to be returned in result set.
+        required: false
+        schema:
+          type: integer
+          default: 10
+          maximum: 100
+          minimum: 1
+        example: 51
+      - name: search
+        in: query
+        description: Limit results to those matching a string.
+        required: false
+        schema:
+          type: string
+        example: Example
+      - name: status
+        in: query
+        description: Limit result set to events with specific status.
+        required: false
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - publish
+            - pending
+            - draft
+            - future
+            - private
+          default:
+          - publish
+          uniqueItems: true
+        example:
+        - publish
+      - name: ticketed
+        in: query
+        description: Limit result set to events with tickets.
+        required: false
+        schema:
+          type: boolean
+        example: true
+      - name: orderby
+        in: query
+        description: Sort collection by event attribute.
+        required: false
+        schema:
+          type: string
+          default: event_date
+          enum:
+          - date
+          - event_date
+          - title
+          - menu_order
+          - modified
+        example: date
+      - name: order
+        in: query
+        description: Order sort attribute ascending or descending.
+        required: false
+        schema:
+          type: string
+          default: ASC
+          enum:
+          - ASC
+          - DESC
+        example: ASC
+      responses:
+        '200':
+          description: Returns the list of series
+          headers:
+            X-WP-Total:
+              description: The total number of series matching the request.
+              required: true
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: The total number of pages for the request.
+              required: true
+              schema:
+                type: integer
+            Link:
+              description: "RFC 5988 Link header for pagination. Contains navigation links with relationships:\n\t\t\t\t`rel=\"next\"` for the next page (if not on last page),\n\t\t\t\t`rel=\"prev\"` for the previous page (if not on first page).\n\t\t\t\tHeader is omitted entirely if there's only one page"
+              required: false
+              schema:
+                type: array
+                items:
+                  type: string
+                  format: uri
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Series'
+        '400':
+          description: A required parameter is missing or an input parameter is in the wrong format
+        '404':
+          description: The requested page was not found
+components:
+  schemas:
+    Series:
+      allOf:
+      - $ref: '#/components/schemas/TEC_Post_Entity'
+      - type: object
+        description: A series
+        title: Series
+    TEC_Post_Entity:
+      type: object
+      title: TEC Post Entity
+      description: A TEC post object as returned by the REST API
+      properties:
+        date:
+          description: The date the entity was published, in the site's timezone. In RFC3339 format.
+          type:
+          - string
+          - 'null'
+          format: date-time
+          pattern: ^\d{4}-\d{2}-\d{2}[Tt ]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}(?::\d{2})?)?$
+          example: '2025-06-04T23:36:56+01:00'
+        date_gmt:
+          description: The date the entity was published, as GMT. In RFC3339 format.
+          type:
+          - string
+          - 'null'
+          format: date-time
+          pattern: ^\d{4}-\d{2}-\d{2}[Tt ]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}(?::\d{2})?)?$
+          example: '2025-06-04T22:36:56Z'
+        guid:
+          description: The globally unique identifier for the entity.
+          readOnly: true
+          type:
+          - object
+          - 'null'
+          properties:
+            rendered:
+              description: The globally unique identifier for the entity.
+              type: string
+              format: uri
+              example: https://example.com/?p=12345
+        id:
+          description: Unique identifier for the entity.
+          readOnly: true
+          type: integer
+          example: 12345
+        link:
+          description: URL to the entity.
+          readOnly: true
+          type: string
+          format: uri
+          example: https://example.com/my-awesome-title
+        modified:
+          description: The date the entity was last modified, in the site's timezone. In RFC3339 format.
+          readOnly: true
+          type: string
+          format: date-time
+          pattern: ^\d{4}-\d{2}-\d{2}[Tt ]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}(?::\d{2})?)?$
+          example: '2025-06-05T19:06:56-03:30'
+        modified_gmt:
+          description: The date the entity was last modified, as GMT. In RFC3339 format.
+          readOnly: true
+          type: string
+          format: date-time
+          pattern: ^\d{4}-\d{2}-\d{2}[Tt ]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}(?::\d{2})?)?$
+          example: '2025-06-05T22:36:56Z'
+        slug:
+          description: An alphanumeric identifier for the entity unique to its type
+          type: string
+          example: my-awesome-title
+        status:
+          description: A named status for the entity.
+          type: string
+          default: publish
+          enum:
+          - publish
+          - pending
+          - draft
+          - future
+          - private
+          example: publish
+        permalink_template:
+          description: Permalink template for the entity.
+          readOnly: true
+          type: string
+          example: https://example.com/sample/
+        generated_slug:
+          description: Slug automatically generated from the entity title
+          readOnly: true
+          type: string
+          example: my-awesome-title
+        title:
+          description: The globally unique identifier for the entity.
+          type: object
+          properties:
+            rendered:
+              description: HTML title for the entity, transformed for display
+              type: string
+              example: My Awesome Title
+        content:
+          description: The content for the entity.
+          type: object
+          properties:
+            rendered:
+              description: HTML content for the entity, transformed for display
+              type: string
+              example: This is the content...
+            protected:
+              description: Whether the content is protected with a password
+              type: boolean
+              example: false
+        excerpt:
+          description: The excerpt for the entity.
+          type: object
+          properties:
+            rendered:
+              description: HTML excerpt for the entity, transformed for display
+              type: string
+              example: This is the excerpt...
+            protected:
+              description: Whether the excerpt is protected with a password
+              type: boolean
+              example: false
+        author:
+          description: The ID for the author of the entity.
+          type: integer
+          example: 1
+        featured_media:
+          description: The ID of the featured media for the entity.
+          type: integer
+          example: 123
+        comment_status:
+          description: Whether or not comments are open on the entity.
+          type: string
+          default: open
+          enum:
+          - open
+          - closed
+          example: open
+        ping_status:
+          description: Whether or not the entity can be pinged
+          type: string
+          default: open
+          enum:
+          - open
+          - closed
+          example: open
+        format:
+          description: The format for the entity.
+          type: string
+          default: standard
+          enum:
+          - standard
+          - aside
+          - chat
+          - gallery
+          - link
+          - image
+          - quote
+          - status
+          - video
+          - audio
+          example: standard
+        sticky:
+          description: Whether or not the entity should be treated as sticky
+          type: boolean
+          default: false
+          example: false
+        template:
+          description: The theme file to use to display the entity.
+          type: string
+          example: templates-full.php
+        tags:
+          description: The terms assigned to the entity in the post_tag taxonomy
+          type: array
+          items:
+            type: integer
+          uniqueItems: true
+          example:
+          - 2
+          - 8
+          - 15
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic

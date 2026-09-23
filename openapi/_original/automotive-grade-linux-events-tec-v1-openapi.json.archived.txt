@@ -1,0 +1,2 @@
+# x-archived-from: automotive-grade-linux-events-tec-v1-openapi.json
+# x-archived-on: 2026-09-16

@@ -1,0 +1,505 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Events Calendar REST Venues API
+  description: The Events Calendar REST API allows accessing upcoming events information easily and conveniently.
+servers:
+- url: https://www.automotivelinux.org/wp-json/tribe/events/v1/
+tags:
+- name: Venues
+paths:
+  /venues:
+    get:
+      parameters:
+      - in: query
+        schema:
+          type: integer
+        description: The archive page to return
+        required: false
+        name: page
+      - in: query
+        schema:
+          type: integer
+        description: The number of venues to return on each page
+        required: false
+        name: per_page
+      - in: query
+        schema:
+          type: string
+        description: Venues should contain the specified string in the title, description or custom fields
+        required: false
+        name: search
+      - in: query
+        schema:
+          type: integer
+        description: Venues should be related to this event
+        required: false
+        name: event
+      - in: query
+        schema:
+          type: boolean
+        description: Venues should have events associated to them
+        required: false
+        name: has_events
+      - in: query
+        schema:
+          type: boolean
+        description: Venues should have upcoming events associated to them
+        required: false
+        name: only_with_upcoming
+      - in: query
+        schema:
+          type: string
+        description: The organizer post status
+        required: false
+        name: status
+      responses:
+        '200':
+          description: Returns all the venues matching the search criteria
+          content:
+            application/json:
+              schema:
+                title: venues
+                type: array
+                items:
+                  $ref: '#/components/schemas/Venue'
+        '400':
+          description: One or more of the specified query variables has a bad format
+        '404':
+          description: The requested page was not found.
+      tags:
+      - Venues
+      summary: Get venues
+      x-summary-source: derived
+      operationId: getVenues
+      x-operation-id-source: derived
+  /venues/{id}:
+    get:
+      parameters:
+      - in: path
+        schema:
+          type: integer
+        description: the venue post ID
+        required: true
+        name: id
+      responses:
+        '200':
+          description: Returns the data of the venue with the specified post ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Venue'
+        '400':
+          description: The venue post ID is missing.
+        '403':
+          description: The venue with the specified ID is not accessible.
+        '404':
+          description: A venue with the specified post ID does not exist.
+      tags:
+      - Venues
+      summary: Get venues by id
+      x-summary-source: derived
+      operationId: getVenuesById
+      x-operation-id-source: derived
+    post:
+      parameters:
+      - in: path
+        schema:
+          type: integer
+        description: the venue post ID
+        required: true
+        name: id
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                author:
+                  description: The venue author ID
+                  type: integer
+                date:
+                  description: The venue publication date
+                  type: string
+                date_utc:
+                  description: The venue publication date (UTC time zone)
+                  type: string
+                venue:
+                  description: The venue name
+                  type: string
+                description:
+                  description: The venue description
+                  type: string
+                status:
+                  description: The venue post status
+                  type: string
+                show_map:
+                  description: Whether events linked to the venue should show a map or not
+                  type: string
+                show_map_link:
+                  description: Whether events linked to the venue should show a map link or not
+                  type: string
+                address:
+                  description: The venue address
+                  type: string
+                city:
+                  description: The venue city
+                  type: string
+                country:
+                  description: The venue country
+                  type: string
+                province:
+                  description: The venue province
+                  type: string
+                state:
+                  description: The venue state
+                  type: string
+                zip:
+                  description: The venue ZIP code
+                  type: string
+                phone:
+                  description: The venue phone number
+                  type: string
+                stateprovince:
+                  description: The venue state and province
+                  type: string
+                website:
+                  description: The venue website URL
+                  type: string
+                image:
+                  description: The organizer featured image ID or URL
+                  type: string
+      responses:
+        '200':
+          description: Returns the data of the updated venue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Venue'
+        '201':
+          description: Returns the data of the created venue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Venue'
+        '400':
+          description: A required parameter is missing or an input parameter is in the wrong format
+        '403':
+          description: The user is not authorized to create venues
+      tags:
+      - Venues
+      summary: Create venues by id
+      x-summary-source: derived
+      operationId: postVenuesById
+      x-operation-id-source: derived
+    delete:
+      parameters:
+      - in: path
+        schema:
+          type: integer
+        description: the venue post ID
+        required: true
+        name: id
+      responses:
+        '200':
+          description: Deletes a venue and returns its data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Venue'
+        '400':
+          description: The venue post ID is missing or does not exist.
+        '403':
+          description: The current user cannot delete the venue with the specified ID.
+        '410':
+          description: The venue with the specified ID has been deleted already.
+        '500':
+          description: The venue with the specified ID could not be deleted.
+      tags:
+      - Venues
+      summary: Delete venues by id
+      x-summary-source: derived
+      operationId: deleteVenuesById
+      x-operation-id-source: derived
+  /venues/by-slug/{slug}:
+    get:
+      parameters:
+      - in: path
+        schema:
+          type: string
+        description: the venue post name
+        required: true
+        name: slug
+      responses:
+        '200':
+          description: Returns the data of the venue with the specified post ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Venue'
+        '400':
+          description: The venue post ID is missing.
+        '403':
+          description: The venue with the specified ID is not accessible.
+        '404':
+          description: A venue with the specified post ID does not exist.
+      tags:
+      - Venues
+      summary: Get venues by slug by slug
+      x-summary-source: derived
+      operationId: getVenuesBySlugBySlug
+      x-operation-id-source: derived
+    post:
+      parameters:
+      - in: path
+        schema:
+          type: string
+        description: the venue post name
+        required: true
+        name: slug
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                author:
+                  description: The venue author ID
+                  type: integer
+                date:
+                  description: The venue publication date
+                  type: string
+                date_utc:
+                  description: The venue publication date (UTC time zone)
+                  type: string
+                venue:
+                  description: The venue name
+                  type: string
+                description:
+                  description: The venue description
+                  type: string
+                status:
+                  description: The venue post status
+                  type: string
+                show_map:
+                  description: Whether events linked to the venue should show a map or not
+                  type: string
+                show_map_link:
+                  description: Whether events linked to the venue should show a map link or not
+                  type: string
+                address:
+                  description: The venue address
+                  type: string
+                city:
+                  description: The venue city
+                  type: string
+                country:
+                  description: The venue country
+                  type: string
+                province:
+                  description: The venue province
+                  type: string
+                state:
+                  description: The venue state
+                  type: string
+                zip:
+                  description: The venue ZIP code
+                  type: string
+                phone:
+                  description: The venue phone number
+                  type: string
+                stateprovince:
+                  description: The venue state and province
+                  type: string
+                website:
+                  description: The venue website URL
+                  type: string
+                image:
+                  description: The organizer featured image ID or URL
+                  type: string
+      responses:
+        '200':
+          description: Returns the data of the updated venue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Venue'
+        '201':
+          description: Returns the data of the created venue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Venue'
+        '400':
+          description: A required parameter is missing or an input parameter is in the wrong format
+        '403':
+          description: The user is not authorized to create venues
+      tags:
+      - Venues
+      summary: Create venues by slug by slug
+      x-summary-source: derived
+      operationId: postVenuesBySlugBySlug
+      x-operation-id-source: derived
+    delete:
+      parameters:
+      - in: path
+        schema:
+          type: string
+        description: the venue post name
+        required: true
+        name: slug
+      responses:
+        '200':
+          description: Deletes a venue and returns its data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Venue'
+        '400':
+          description: The venue post ID is missing or does not exist.
+        '403':
+          description: The current user cannot delete the venue with the specified ID.
+        '410':
+          description: The venue with the specified ID has been deleted already.
+        '500':
+          description: The venue with the specified ID could not be deleted.
+      tags:
+      - Venues
+      summary: Delete venues by slug by slug
+      x-summary-source: derived
+      operationId: deleteVenuesBySlugBySlug
+      x-operation-id-source: derived
+components:
+  schemas:
+    Venue:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The venue WordPress post ID
+        global_id:
+          type: string
+          description: The venue ID used to globally identify in Event Aggregator
+        global_id_lineage:
+          type: array
+          items:
+            type: string
+          description: An Array containing the lineage of where this organizer comes from, this should not change after the organizer is created.
+        author:
+          type: integer
+          description: The venue author WordPress post ID
+        date:
+          type: string
+          description: The venue creation date in the site time zone
+        date_utc:
+          type: string
+          description: The venue creation date in UTC time
+        modified:
+          type: string
+          description: The venue last modification date in the site time zone
+        modified_utc:
+          type: string
+          description: The venue last modification date in UTC time
+        status:
+          type: string
+          description: The venue status
+        url:
+          type: string
+          description: The URL to the venue page
+        venue:
+          type: string
+          description: The venue name
+        description:
+          type: string
+          description: The venue long description
+        excerpt:
+          type: string
+          description: The venue short description
+        slug:
+          type: string
+          description: The venue slug
+        image:
+          type: string
+          description: The event featured image details if set
+          $ref: '#/components/schemas/Image'
+        show_map:
+          type: boolean
+          description: Whether the map should be shown for the venue or not
+        show_map_link:
+          type: boolean
+          description: Whether the map link should be shown for the venue or not
+        address:
+          type: string
+          description: The venue address
+        city:
+          type: string
+          description: The venue city
+        country:
+          type: string
+          description: The venue country
+        province:
+          type: string
+          description: The venue province
+        state:
+          type: string
+          description: The venue state
+        zip:
+          type: string
+          description: The venue ZIP code
+        phone:
+          type: string
+          description: The venue phone number
+        website:
+          type: string
+          description: The venue website URL
+        stateprovince:
+          type: string
+          description: The venue state or province
+        geo_lat:
+          type: number
+          format: double
+          description: The venue geo latitude
+        geo_lng:
+          type: number
+          format: double
+          description: The venue geo longitude
+    Image:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          description: The URL to the full size version of the image
+        id:
+          type: integer
+          description: The image WordPress post ID
+        extension:
+          type: string
+          description: The image file extension
+        width:
+          type: integer
+          description: The image natural width in pixels
+        height:
+          type: integer
+          description: The image natural height in pixels
+        sizes:
+          type: array
+          description: The details about each size available for the image
+          items:
+            $ref: '#/components/schemas/ImageSize'
+    ImageSize:
+      type: object
+      properties:
+        width:
+          type: integer
+          description: The image width in pixels in the specified size
+        height:
+          type: integer
+          description: The image height in pixels in the specified size
+        mime-type:
+          type: string
+          description: The image mime-type
+        url:
+          type: string
+          format: uri
+          description: The link to the image in the specified size on the site

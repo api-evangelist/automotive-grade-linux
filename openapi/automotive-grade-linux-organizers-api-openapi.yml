@@ -1,0 +1,419 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Events Calendar REST Organizers API
+  description: The Events Calendar REST API allows accessing upcoming events information easily and conveniently.
+servers:
+- url: https://www.automotivelinux.org/wp-json/tribe/events/v1/
+tags:
+- name: Organizers
+paths:
+  /organizers:
+    get:
+      parameters:
+      - in: query
+        schema:
+          type: integer
+        description: The archive page to return
+        required: false
+        name: page
+      - in: query
+        schema:
+          type: integer
+        description: The number of organizers to return on each page
+        required: false
+        name: per_page
+      - in: query
+        schema:
+          type: string
+        description: Organizers should contain the specified string in the title, description or custom fields
+        required: false
+        name: search
+      - in: query
+        schema:
+          type: integer
+        description: Organizers should be related to this event
+        required: false
+        name: event
+      - in: query
+        schema:
+          type: boolean
+        description: Organizers should have events associated to them
+        required: false
+        name: has_events
+      - in: query
+        schema:
+          type: boolean
+        description: Organizers should have upcoming events associated to them
+        required: false
+        name: only_with_upcoming
+      - in: query
+        schema:
+          type: string
+        description: The organizer post status
+        required: false
+        name: status
+      responses:
+        '200':
+          description: Returns all the organizers matching the search criteria
+          content:
+            application/json:
+              schema:
+                title: organizers
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organizer'
+        '400':
+          description: One or more of the specified query variables has a bad format
+        '404':
+          description: The requested page was not found.
+      tags:
+      - Organizers
+      summary: Get organizers
+      x-summary-source: derived
+      operationId: getOrganizers
+      x-operation-id-source: derived
+  /organizers/{id}:
+    get:
+      parameters:
+      - in: path
+        schema:
+          type: integer
+        description: the organizer post ID
+        required: true
+        name: id
+      responses:
+        '200':
+          description: Returns the data of the organizer with the specified post ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organizer'
+        '400':
+          description: The organizer post ID is missing.
+        '403':
+          description: The organizer with the specified ID is not accessible.
+        '404':
+          description: An organizer with the specified event does not exist.
+      tags:
+      - Organizers
+      summary: Get organizers by id
+      x-summary-source: derived
+      operationId: getOrganizersById
+      x-operation-id-source: derived
+    post:
+      parameters:
+      - in: path
+        schema:
+          type: integer
+        description: the organizer post ID
+        required: true
+        name: id
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id:
+                  description: the organizer post ID
+                  type: integer
+                author:
+                  description: The organizer author ID
+                  type: integer
+                date:
+                  description: The organizer publication date
+                  type: string
+                date_utc:
+                  description: The organizer publication date (UTC time zone)
+                  type: string
+                organizer:
+                  description: The organizer name
+                  type: string
+                description:
+                  description: The organizer description
+                  type: string
+                status:
+                  description: The organizer post status
+                  type: string
+                phone:
+                  description: The organizer phone number
+                  type: string
+                website:
+                  description: The organizer website
+                  type: string
+                email:
+                  description: The organizer e-mail address
+                  type: string
+                image:
+                  description: The organizer featured image ID or URL
+                  type: string
+      responses:
+        '201':
+          description: Returns the data of the created organizer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organizer'
+        '400':
+          description: A required parameter is missing or an input parameter is in the wrong format
+        '403':
+          description: The user is not authorized to create organizers
+      tags:
+      - Organizers
+      summary: Create organizers by id
+      x-summary-source: derived
+      operationId: postOrganizersById
+      x-operation-id-source: derived
+    delete:
+      parameters:
+      - in: path
+        schema:
+          type: integer
+        description: the organizer post ID
+        required: true
+        name: id
+      responses:
+        '200':
+          description: Deletes an organizer and returns its data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organizer'
+        '400':
+          description: The organizer post ID is missing or does not exist.
+        '403':
+          description: The current user cannot delete the organizer with the specified ID.
+        '410':
+          description: The organizer with the specified ID has been deleted already.
+        '500':
+          description: The organizer with the specified ID could not be deleted.
+      tags:
+      - Organizers
+      summary: Delete organizers by id
+      x-summary-source: derived
+      operationId: deleteOrganizersById
+      x-operation-id-source: derived
+  /organizers/by-slug/{slug}:
+    get:
+      parameters:
+      - in: path
+        schema:
+          type: string
+        description: the organizer post name
+        required: true
+        name: slug
+      responses:
+        '200':
+          description: Returns the data of the organizer with the specified post ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organizer'
+        '400':
+          description: The organizer post ID is missing.
+        '403':
+          description: The organizer with the specified ID is not accessible.
+        '404':
+          description: An organizer with the specified event does not exist.
+      tags:
+      - Organizers
+      summary: Get organizers by slug by slug
+      x-summary-source: derived
+      operationId: getOrganizersBySlugBySlug
+      x-operation-id-source: derived
+    post:
+      parameters:
+      - in: path
+        schema:
+          type: string
+        description: the organizer post name
+        required: true
+        name: slug
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                slug:
+                  description: the organizer post name
+                  type: string
+                author:
+                  description: The organizer author ID
+                  type: integer
+                date:
+                  description: The organizer publication date
+                  type: string
+                date_utc:
+                  description: The organizer publication date (UTC time zone)
+                  type: string
+                organizer:
+                  description: The organizer name
+                  type: string
+                description:
+                  description: The organizer description
+                  type: string
+                status:
+                  description: The organizer post status
+                  type: string
+                phone:
+                  description: The organizer phone number
+                  type: string
+                website:
+                  description: The organizer website
+                  type: string
+                email:
+                  description: The organizer e-mail address
+                  type: string
+                image:
+                  description: The organizer featured image ID or URL
+                  type: string
+      responses:
+        '201':
+          description: Returns the data of the created organizer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organizer'
+        '400':
+          description: A required parameter is missing or an input parameter is in the wrong format
+        '403':
+          description: The user is not authorized to create organizers
+      tags:
+      - Organizers
+      summary: Create organizers by slug by slug
+      x-summary-source: derived
+      operationId: postOrganizersBySlugBySlug
+      x-operation-id-source: derived
+    delete:
+      parameters:
+      - in: path
+        schema:
+          type: string
+        description: the organizer post name
+        required: true
+        name: slug
+      responses:
+        '200':
+          description: Deletes an organizer and returns its data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organizer'
+        '400':
+          description: The organizer post ID is missing or does not exist.
+        '403':
+          description: The current user cannot delete the organizer with the specified ID.
+        '410':
+          description: The organizer with the specified ID has been deleted already.
+        '500':
+          description: The organizer with the specified ID could not be deleted.
+      tags:
+      - Organizers
+      summary: Delete organizers by slug by slug
+      x-summary-source: derived
+      operationId: deleteOrganizersBySlugBySlug
+      x-operation-id-source: derived
+components:
+  schemas:
+    Organizer:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The organizer WordPress post ID
+        global_id:
+          type: string
+          description: The organizer ID used to globally identify in Event Aggregator
+        global_id_lineage:
+          type: array
+          items:
+            type: string
+          description: An Array containing the lineage of where this organizer comes from, this should not change after the organizer is created.
+        author:
+          type: integer
+          description: The organizer author WordPress post ID
+        date:
+          type: string
+          description: The organizer creation date in the site time zone
+        date_utc:
+          type: string
+          description: The organizer creation date in UTC time
+        modified:
+          type: string
+          description: The organizer last modification date in the site time zone
+        modified_utc:
+          type: string
+          description: The organizer last modification date in UTC time
+        status:
+          type: string
+          description: The organizer status
+        url:
+          type: string
+          description: The URL to the organizer page
+        organizer:
+          type: string
+          description: The organizer name
+        description:
+          type: string
+          description: The organizer long description
+        excerpt:
+          type: string
+          description: The organizer short description
+        slug:
+          type: string
+          description: The organizer slug
+        image:
+          type: string
+          description: The event featured image details if set
+          $ref: '#/components/schemas/Image'
+        phone:
+          type: string
+          description: The organizer phone number
+        website:
+          type: string
+          description: The organizer website
+        email:
+          type: string
+          description: The organizer email address
+    Image:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          description: The URL to the full size version of the image
+        id:
+          type: integer
+          description: The image WordPress post ID
+        extension:
+          type: string
+          description: The image file extension
+        width:
+          type: integer
+          description: The image natural width in pixels
+        height:
+          type: integer
+          description: The image natural height in pixels
+        sizes:
+          type: array
+          description: The details about each size available for the image
+          items:
+            $ref: '#/components/schemas/ImageSize'
+    ImageSize:
+      type: object
+      properties:
+        width:
+          type: integer
+          description: The image width in pixels in the specified size
+        height:
+          type: integer
+          description: The image height in pixels in the specified size
+        mime-type:
+          type: string
+          description: The image mime-type
+        url:
+          type: string
+          format: uri
+          description: The link to the image in the specified size on the site
