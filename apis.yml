@@ -43,7 +43,7 @@ tags:
   - In-Vehicle Infotainment
   - IoT
   - Linux Foundation
-  - Open-Source
+  - Open Source
   - Software Defined Vehicles
 tags_raw:
   - Automotive
@@ -54,6 +54,7 @@ tags_raw:
   - Linux Foundation
   - Open Source
   - Software Defined Vehicles
+  - Open-Source
 url: >-
   https://raw.githubusercontent.com/api-evangelist/automotive-grade-linux/refs/heads/main/apis.yml
 created: '2026-03-16'
@@ -178,160 +179,20 @@ apis:
       https://docs.automotivelinux.org/en/master/05_APIs_and_Services/instrument-cluster/AGL-Instrument-Cluster-API-en/
   - type: Documentation
     url: https://docs.automotivelinux.org/en/master/05_APIs_and_Services/01_Introduction/
-- aid: automotive-grade-linux:automotive-grade-linux-categories-api
-  name: Automotive Grade Linux Categories API
-  description: The Categories API from Automotive Grade Linux — 2 operation(s) for categories.
-  humanURL: >-
-    https://docs.automotivelinux.org/en/master/#0_Getting_Started/2_Developing_an_AGL_Application/
-  baseURL: https://www.automotivelinux.org/wp-json/tribe/events/v1
+- aid: automotive-grade-linux:automotivelinux-org-website-wordpress-rest
+  name: Automotive Grade Linux Website (WordPress REST)
+  description: 'The public WordPress REST API (wp-json) of the Automotive Grade Linux website at www.automotivelinux.org:
+    the route index of the site''s content management system, catalogued as one site surface rather than
+    as separate APIs.'
+  baseURL: https://www.automotivelinux.org/wp-json
   tags:
-  - Categories
+  - WordPress
+  x-surface: platform-generated
   properties:
-  - type: OpenAPI
-    url: openapi/automotive-grade-linux-categories-api-openapi.yml
-  - type: DataModel
-    url: data-model/automotive-grade-linux-data-model.yml
-  - type: ErrorCatalog
-    url: errors/automotive-grade-linux-problem-types.yml
   - type: Documentation
-    url: https://www.automotivelinux.org/wp-json/tribe/events/v1/doc
-  - type: Documentation
-    url: https://www.automotivelinux.org/wp-json/tec/v1/docs
-- aid: automotive-grade-linux:automotive-grade-linux-common-api
-  name: Automotive Grade Linux Common API
-  description: These operations are introduced by the Common library.
-  humanURL: >-
-    https://docs.automotivelinux.org/en/master/#0_Getting_Started/2_Developing_an_AGL_Application/
-  baseURL: https://www.automotivelinux.org/wp-json/tribe/events/v1
-  tags:
-  - Common
-  properties:
-  - type: OpenAPI
-    url: openapi/automotive-grade-linux-common-api-openapi.yml
-  - type: DataModel
-    url: data-model/automotive-grade-linux-data-model.yml
-  - type: ErrorCatalog
-    url: errors/automotive-grade-linux-problem-types.yml
-  - type: Documentation
-    url: https://www.automotivelinux.org/wp-json/tribe/events/v1/doc
-  - type: Documentation
-    url: https://www.automotivelinux.org/wp-json/tec/v1/docs
-- aid: automotive-grade-linux:automotive-grade-linux-doc-api
-  name: Automotive Grade Linux Doc API
-  description: The Doc API from Automotive Grade Linux — 1 operation(s) for doc.
-  humanURL: >-
-    https://docs.automotivelinux.org/en/master/#0_Getting_Started/2_Developing_an_AGL_Application/
-  baseURL: https://www.automotivelinux.org/wp-json/tribe/events/v1
-  tags:
-  - Doc
-  properties:
-  - type: OpenAPI
-    url: openapi/automotive-grade-linux-doc-api-openapi.yml
-  - type: DataModel
-    url: data-model/automotive-grade-linux-data-model.yml
-  - type: ErrorCatalog
-    url: errors/automotive-grade-linux-problem-types.yml
-  - type: Documentation
-    url: https://www.automotivelinux.org/wp-json/tribe/events/v1/doc
-  - type: Documentation
-    url: https://www.automotivelinux.org/wp-json/tec/v1/docs
-- aid: automotive-grade-linux:automotive-grade-linux-events-api
-  name: Automotive Grade Linux Events API
-  description: The Events API from Automotive Grade Linux — 7 operation(s) for events.
-  humanURL: >-
-    https://docs.automotivelinux.org/en/master/#0_Getting_Started/2_Developing_an_AGL_Application/
-  baseURL: https://www.automotivelinux.org/wp-json/tribe/events/v1
-  tags:
-  - Event
-  tags_raw:
-  - Events
-  properties:
-  - type: OpenAPI
-    url: openapi/automotive-grade-linux-events-api-openapi.yml
-  - type: DataModel
-    url: data-model/automotive-grade-linux-data-model.yml
-  - type: ErrorCatalog
-    url: errors/automotive-grade-linux-problem-types.yml
-  - type: Documentation
-    url: https://www.automotivelinux.org/wp-json/tribe/events/v1/doc
-  - type: Documentation
-    url: https://www.automotivelinux.org/wp-json/tec/v1/docs
-- aid: automotive-grade-linux:automotive-grade-linux-events-pro-api
-  name: Automotive Grade Linux Events Pro API
-  description: These operations are introduced by Events Pro.
-  humanURL: >-
-    https://docs.automotivelinux.org/en/master/#0_Getting_Started/2_Developing_an_AGL_Application/
-  baseURL: https://www.automotivelinux.org/wp-json/tribe/events/v1
-  tags:
-  - Events Pro
-  properties:
-  - type: OpenAPI
-    url: openapi/automotive-grade-linux-events-pro-api-openapi.yml
-  - type: DataModel
-    url: data-model/automotive-grade-linux-data-model.yml
-  - type: ErrorCatalog
-    url: errors/automotive-grade-linux-problem-types.yml
-  - type: Documentation
-    url: https://www.automotivelinux.org/wp-json/tribe/events/v1/doc
-  - type: Documentation
-    url: https://www.automotivelinux.org/wp-json/tec/v1/docs
-- aid: automotive-grade-linux:automotive-grade-linux-organizers-api
-  name: Automotive Grade Linux Organizers API
-  description: The Organizers API from Automotive Grade Linux — 3 operation(s) for organizers.
-  humanURL: >-
-    https://docs.automotivelinux.org/en/master/#0_Getting_Started/2_Developing_an_AGL_Application/
-  baseURL: https://www.automotivelinux.org/wp-json/tribe/events/v1
-  tags:
-  - Organizers
-  properties:
-  - type: OpenAPI
-    url: openapi/automotive-grade-linux-organizers-api-openapi.yml
-  - type: DataModel
-    url: data-model/automotive-grade-linux-data-model.yml
-  - type: ErrorCatalog
-    url: errors/automotive-grade-linux-problem-types.yml
-  - type: Documentation
-    url: https://www.automotivelinux.org/wp-json/tribe/events/v1/doc
-  - type: Documentation
-    url: https://www.automotivelinux.org/wp-json/tec/v1/docs
-- aid: automotive-grade-linux:automotive-grade-linux-tags-api
-  name: Automotive Grade Linux Tags API
-  description: The Tags API from Automotive Grade Linux — 2 operation(s) for tags.
-  humanURL: >-
-    https://docs.automotivelinux.org/en/master/#0_Getting_Started/2_Developing_an_AGL_Application/
-  baseURL: https://www.automotivelinux.org/wp-json/tribe/events/v1
-  tags:
-  - Tags
-  properties:
-  - type: OpenAPI
-    url: openapi/automotive-grade-linux-tags-api-openapi.yml
-  - type: DataModel
-    url: data-model/automotive-grade-linux-data-model.yml
-  - type: ErrorCatalog
-    url: errors/automotive-grade-linux-problem-types.yml
-  - type: Documentation
-    url: https://www.automotivelinux.org/wp-json/tribe/events/v1/doc
-  - type: Documentation
-    url: https://www.automotivelinux.org/wp-json/tec/v1/docs
-- aid: automotive-grade-linux:automotive-grade-linux-venues-api
-  name: Automotive Grade Linux Venues API
-  description: The Venues API from Automotive Grade Linux — 3 operation(s) for venues.
-  humanURL: >-
-    https://docs.automotivelinux.org/en/master/#0_Getting_Started/2_Developing_an_AGL_Application/
-  baseURL: https://www.automotivelinux.org/wp-json/tribe/events/v1
-  tags:
-  - Venues
-  properties:
-  - type: OpenAPI
-    url: openapi/automotive-grade-linux-venues-api-openapi.yml
-  - type: DataModel
-    url: data-model/automotive-grade-linux-data-model.yml
-  - type: ErrorCatalog
-    url: errors/automotive-grade-linux-problem-types.yml
-  - type: Documentation
-    url: https://www.automotivelinux.org/wp-json/tribe/events/v1/doc
-  - type: Documentation
-    url: https://www.automotivelinux.org/wp-json/tec/v1/docs
+    url: https://www.automotivelinux.org/wp-json
+  x-platform: wordpress
+  x-platform-surface: rest
 common:
   - type: Overlay
     url: overlays/automotive-grade-linux-events-api-overlay.yaml
