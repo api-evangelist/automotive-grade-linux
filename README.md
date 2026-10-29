@@ -1,4 +1,4 @@
-# Automotive Grade Linux (automotive-grade-linux)
+# Automotive Grade Linux
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,104 +64,130 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Automotive Grade Linux (AGL) is a collaborative open source project under the Linux Foundation that develops a unified software platform for connected vehicles. AGL brings together automakers (Toyota, Honda, Mercedes-Benz), suppliers, and technology companies to build an open Linux-based software stack for in-vehicle infotainment, instrument clusters, telematics, and software-defined vehicle (SoDeV) architectures.
+Automotive Grade Linux (AGL) is a collaborative open source project under the Linux Foundation that develops a unified software platform for connected vehicles. AGL brings together automakers (Toyota, Honda, Mercedes-Benz), suppliers, and technology companies to build an open Linux-based software stack for in-vehicle infotainment, instrument clusters, telematics, and software-defined vehicle (SoDeV) architectures. The platform decouples software from hardware enabling rapid automotive application development.
 
-**URL:** [https://www.automotivelinux.org](https://www.automotivelinux.org)
+**Areas:** Automotive · Connected Vehicles · Embedded Linux · In-Vehicle Infotainment · IoT · Linux Foundation · Open Source · Software Defined Vehicles
 
-**Run:** [Capabilities Using Naftiko](https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=company-api-evangelist&utm_content=repo)
+## Automotive Grade Linux on APIs.io
 
-## Tags
+Everything profiled for Automotive Grade Linux is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/automotive-grade-linux/](https://apis.io/providers/automotive-grade-linux/)** — or go straight to one of the APIs or properties below.
 
- - Automotive, Connected Vehicles, Embedded Linux, In-Vehicle Infotainment, IoT, Linux Foundation, Open Source, Software Defined Vehicles
+### APIs (7)
 
-## Timestamps
+- [AGL Application Framework API](https://apis.io/apis/automotive-grade-linux/agl-application-framework-api/) — The AGL Application Framework provides APIs for managing applications on the AGL platform including installation, lifecycle management, permission…
+- [AGL VSOMEIP Service API](https://apis.io/apis/automotive-grade-linux/vsomeip-service-api/) — AGL uses SOME/IP (Scalable service-Oriented MiddlewarE over IP) via the vSomeIP library for vehicle service communication. This enables microservice…
+- [AGL SoDeV Software Defined Vehicle API](https://apis.io/apis/automotive-grade-linux/sodev-api/) — The AGL SoDeV (Software Defined Vehicle) reference platform provides APIs for software-defined vehicle architectures that decouple software from hardware.…
+- [AGL LAVA Test Lab API](https://apis.io/apis/automotive-grade-linux/agl-lava-api/) — The REST API of AGL's public LAVA (Linaro Automated Validation Architecture) continuous integration lab, where AGL images are booted and tested on real…
+- [AGL Gerrit Code Review API](https://apis.io/apis/automotive-grade-linux/agl-gerrit-api/) — AGL runs its own Gerrit instance as the authoritative home of the AGL source tree - 263 projects including meta-agl, AGL-repo and the agl-service-*…
+- [AGL Instrument Cluster API](https://apis.io/apis/automotive-grade-linux/agl-instrument-cluster-api/) — The published interface specification between the Cluster UI in the HMI layer and the IC-Service in the service layer of an AGL instrument cluster. Revision…
+- [Automotive Grade Linux Website (WordPress REST)](https://apis.io/apis/automotive-grade-linux/automotivelinux-org-website-wordpress-rest/) — The public WordPress REST API (wp-json) of the Automotive Grade Linux website at www.automotivelinux.org: the route index of the site's content management…
 
-- **Created:** 2026-03-16
-- **Modified:** 2026-04-19
+### Published properties
 
-## APIs
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-### AGL Application Framework API
+#### MCP servers (1)
 
-The AGL Application Framework provides APIs for managing applications on the AGL platform including installation, lifecycle management, permission enforcement, and inter-application communication using D-Bus and WebSocket-based APIs.
+Model Context Protocol servers that expose the API to agents.
 
-**Human URL:** [https://docs.automotivelinux.org/en/master/#0_Getting_Started/2_Developing_an_AGL_Application/](https://docs.automotivelinux.org/en/master/#0_Getting_Started/2_Developing_an_AGL_Application/)
+- [lava](https://apis.io/servers/automotive-grade-linux/lava/)
 
-#### Tags
+#### Overlays (2)
 
- - Application Framework, Lifecycle Management, IVI, D-Bus
+OpenAPI overlays, including conversational phrasing for each operation.
 
-#### Properties
+- [Automotive Grade Linux Events Api Overlay](https://apis.io/overlays/automotive-grade-linux/automotive-grade-linux-events-api-overlay/)
+- [Automotive Grade Linux Events Tec V1 Overlay](https://apis.io/overlays/automotive-grade-linux/automotive-grade-linux-events-tec-v1-overlay/)
 
-- [Documentation](https://docs.automotivelinux.org/en/master/#0_Getting_Started/2_Developing_an_AGL_Application/)
+#### Security (3)
 
-### AGL VSOMEIP Service API
+Authentication, trust centre, and vulnerability disclosure.
 
-AGL uses SOME/IP via the vSomeIP library for vehicle service communication, enabling microservice communication between ECUs over Ethernet using service discovery, request-response, and event notification patterns.
+- [Automotive Grade Linux Authentication](https://apis.io/security/automotive-grade-linux/automotive-grade-linux-authentication/)
+- [Automotive Grade Linux Domain Security](https://apis.io/security/automotive-grade-linux/automotive-grade-linux-domain-security/)
+- [Automotive Grade Linux Vulnerability Disclosure](https://apis.io/security/automotive-grade-linux/automotive-grade-linux-vulnerability-disclosure/)
 
-**Human URL:** [https://github.com/COVESA/vsomeip](https://github.com/COVESA/vsomeip)
+#### Plans and pricing (1)
 
-#### Tags
+Published plans, tiers and prices.
 
- - SOME/IP, Vehicle Services, ECU Communication, Ethernet, Microservices
+- [Automotive Grade Linux Plans Pricing](https://apis.io/plans/automotive-grade-linux/automotive-grade-linux-plans-pricing/)
 
-#### Properties
+#### Rate limits (1)
 
-- [Documentation](https://github.com/COVESA/vsomeip)
-- [GitHub Repository](https://github.com/COVESA/vsomeip)
+Published request limits.
 
-### AGL SoDeV Software Defined Vehicle API
+- [Automotive Grade Linux Rate Limits](https://apis.io/rate-limits/automotive-grade-linux/automotive-grade-linux-rate-limits/)
 
-The AGL SoDeV reference platform provides APIs for software-defined vehicle architectures that decouple software from hardware, building on Zephyr RTOS and meta-AGL layers.
+#### FinOps (1)
 
-**Human URL:** [https://www.automotivelinux.org](https://www.automotivelinux.org)
+What the API costs to run, by operation.
 
-#### Tags
+- [Automotive Grade Linux Finops](https://apis.io/finops/automotive-grade-linux/automotive-grade-linux-finops/)
 
- - Software Defined Vehicles, Zephyr, OTA Updates, Vehicle Computing
+## Where to find this API
 
-#### Properties
-
-- [Documentation](https://docs.automotivelinux.org)
-- [GitHub Repository](https://github.com/automotive-grade-linux/meta-agl-monorepo)
-
-## Common Properties
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.automotivelinux.org)
-- [Documentation](https://docs.automotivelinux.org)
-- [GitHub Organization](https://github.com/automotive-grade-linux)
-- [GitHub Repository](https://github.com/automotive-grade-linux/meta-agl-monorepo)
+- [Documentation](https://lf-automotivelinux.atlassian.net/wiki/spaces/HOME/)
+- [Getting started](https://www.automotivelinux.org/software/download/get-started/)
+- [API reference](https://docs.automotivelinux.org/en/master/05_APIs_and_Services/instrument-cluster/AGL-Instrument-Cluster-API-en/)
+- [Support](https://lists.automotivelinux.org/g/agl-main)
+- [Blog](https://www.automotivelinux.org/feed/)
+- [Terms of service](https://www.linuxfoundation.org/terms)
+- [Privacy policy](https://www.linuxfoundation.org/privacy)
+- [GitHub](https://github.com/automotive-grade-linux)
 
-## Features
+## API Evangelist rating
 
-| Name | Description |
-|------|-------------|
-| Yocto-Based Build System | AGL uses the Yocto Project and OpenEmbedded build framework with meta-AGL layers for creating customized embedded Linux distributions targeting automotive hardware platforms including Renesas R-Car and Raspberry Pi. |
-| SOME/IP Vehicle Services | Service-oriented in-vehicle communication using the SOME/IP protocol via vSomeIP for microservice architectures across ECUs over automotive Ethernet networks. |
-| Software Defined Vehicle (SoDeV) | AGL SoDeV reference platform for decoupling software from hardware, enabling flexible, updatable in-vehicle software architectures using Zephyr RTOS and container-based application isolation. |
-| Over-The-Air Updates | OTA update framework for delivering software updates to AGL-based in-vehicle systems without physical access, supporting fleet-wide update management. |
-| IVI and Instrument Cluster Support | Wayland/Weston-based display framework for in-vehicle infotainment and digital instrument cluster applications with automotive-grade display requirements. |
+**Kin Score 31.8** — thin · rubric 0.24.0 · scored 2026-10-17
 
-## Use Cases
+| Facet | Score |
+|---|---|
+| Discoverability | 55.0 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 28.9 |
+| Developer ergonomics | 61.9 |
+| Access clarity | 21.1 |
 
-| Name | Description |
-|------|-------------|
-| In-Vehicle Infotainment Development | Develop navigation, media, and connectivity applications for automotive head units using AGL application framework APIs and the Wayland display system. |
-| Connected Car Platform | Build telematics, V2X communication, and cloud connectivity capabilities on AGL-based vehicle computing platforms. |
-| Software Defined Vehicle Architecture | Design vehicle software architectures that decouple application software from hardware using AGL SoDeV as the foundation platform. |
-| Instrument Cluster Applications | Create digital instrument cluster applications for speedometers, tachometers, and ADAS status displays using AGL display APIs. |
+**Agent readiness 15.7** — agent-aware
 
-## Integrations
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | yes |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
 
-| Name | Description |
-|------|-------------|
-| COVESA Vehicle Signal Specification | Integration with the COVESA Vehicle Signal Specification (VSS) for standardized access to vehicle sensor and actuator data. |
-| Eclipse KUKSA | Integration with Eclipse KUKSA for vehicle signal API abstraction enabling portable in-vehicle application development. |
-| Zephyr RTOS | AGL SoDeV integrates Zephyr RTOS for safety-critical microcontroller domains within software-defined vehicle architectures. |
-| Renesas R-Car Platforms | Primary hardware reference platform support for Renesas R-Car SoCs used in production automotive IVI and cluster systems. |
+**Regulatory alignment 30.4** — Horizontal (data, software, accessibility, platform)
 
-## Maintainers
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/automotive-grade-linux/](https://apis.io/providers/automotive-grade-linux/).
 
-**FN:** Kin Lane
+## How this profile is made
 
-**Email:** info@apievangelist.com
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Automotive Grade Linux: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/automotive-grade-linux/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
